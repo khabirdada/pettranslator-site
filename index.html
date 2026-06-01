@@ -2,516 +2,1087 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PetTranslator.ai — Veterinary-grade AI that decodes what your pet is telling you</title>
-  <meta name="description" content="Upload a 10-second video. Our AI analyzes your pet's body language, vocalization, and context the way a certified animal behaviorist would — and gives you a plain-English translation in under 30 seconds." />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>PetTranslator.ai — A scientific instrument for understanding your pet</title>
+  <meta name="description" content="Upload a 10-second video. A multimodal AI documents body language, vocalization, and context the way a veterinary behaviorist would — then translates it into plain English. Launching summer 2026." />
+  <meta name="theme-color" content="#f6f0e6" />
 
   <!-- Open Graph / social share -->
-  <meta property="og:title" content="PetTranslator.ai — Know what your pet is actually telling you" />
+  <meta property="og:title" content="PetTranslator.ai — A scientific instrument for understanding your pet" />
   <meta property="og:description" content="Veterinary-grade multimodal AI analyzes your pet's video, body language, and sounds to reveal their emotional state in seconds." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://pettranslator.ai" />
   <meta property="og:image" content="https://pettranslator.ai/og.png" />
   <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- Favicon (replace with real one before launch) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐾</text></svg>" />
 
-  <!-- Tailwind via CDN — zero build step -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Inter font -->
+  <!-- Fonts: editorial-scientific pairing -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..900,0..100;1,9..144,400..900,0..100&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet" />
 
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    .gradient-text {
-      background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    /* ---------- DESIGN TOKENS ---------- */
+    :root {
+      --paper: #f5efe2;
+      --paper-deep: #ece4d2;
+      --paper-light: #fbf6ea;
+      --ink: #1a1814;
+      --ink-soft: #4d463e;
+      --ink-faded: #7d7468;
+      --moss: #2c3a2d;
+      --moss-bright: #4f6b4f;
+      --rust: #8c4324;
+      --rust-soft: #c08566;
+      --rule: #d5c9b1;
+      --rule-soft: #e2d8c2;
+
+      --font-serif: "Fraunces", "Times New Roman", Georgia, serif;
+      --font-sans: "General Sans", -apple-system, system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+      --serif-soft: "SOFT" 50;
+      --serif-soft-soft: "SOFT" 100;
+
+      --max: 1240px;
+      --gutter: clamp(1.25rem, 4vw, 2.5rem);
+    }
+
+    /* ---------- RESET + BASE ---------- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: clamp(16px, 1vw + 0.7rem, 17px);
+      font-weight: 400;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      font-feature-settings: "ss01", "cv11";
+      position: relative;
+    }
+    /* paper grain overlay */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    }
+    main, header, footer, section { position: relative; z-index: 2; }
+    a { color: inherit; }
+    img, svg { display: block; max-width: 100%; }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.04;
+      margin: 0;
+      font-variation-settings: "SOFT" 30;
+    }
+    h1 { font-size: clamp(2.5rem, 7.5vw, 5.75rem); letter-spacing: -0.03em; }
+    h2 { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.025em; }
+    h3 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.02em; }
+
+    em { font-style: italic; font-variation-settings: "SOFT" 100; }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding-left: var(--gutter);
+      padding-right: var(--gutter);
+    }
+    .narrow { max-width: 880px; }
+    .narrower { max-width: 680px; }
+
+    .eyebrow {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+    }
+    .label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-faded);
+      text-transform: uppercase;
+    }
+
+    .rule { height: 1px; background: var(--rule); border: 0; }
+    .rule-thick { height: 2px; background: var(--ink); border: 0; }
+
+    /* ---------- MASTHEAD ---------- */
+    .masthead {
+      border-top: 4px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      padding: 0.65rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: var(--paper);
+    }
+    .masthead-inner { display: flex; justify-content: space-between; gap: 1rem; }
+    .masthead-inner span:nth-child(2) { display: none; }
+    @media (min-width: 720px) {
+      .masthead-inner span:nth-child(2) { display: inline; }
+    }
+
+    /* ---------- NAV ---------- */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: color-mix(in srgb, var(--paper) 88%, transparent);
+      backdrop-filter: saturate(140%) blur(14px);
+      -webkit-backdrop-filter: saturate(140%) blur(14px);
+      border-bottom: 1px solid var(--rule-soft);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 1rem; padding-bottom: 1rem;
+      gap: 1rem;
+    }
+    .brand {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      font-variation-settings: "SOFT" 0;
+      line-height: 1;
+    }
+    .brand em { color: var(--moss); font-variation-settings: "SOFT" 100; }
+    .nav-links { display: none; gap: 2rem; }
+    @media (min-width: 820px) {
+      .nav-links { display: flex; align-items: center; }
+    }
+    .nav-links a {
+      font-size: 0.86rem; text-decoration: none; color: var(--ink-soft);
+      transition: color 200ms;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.4rem;
+      min-height: 44px;
+      background: var(--ink); color: var(--paper-light);
+      font-family: var(--font-sans); font-size: 0.86rem; font-weight: 500;
+      letter-spacing: 0.01em;
+      text-decoration: none; border: 0; border-radius: 999px;
+      cursor: pointer;
+      transition: transform 200ms cubic-bezier(.2,.7,.3,1), background 200ms;
+    }
+    .btn:hover { background: var(--moss); transform: translateY(-1px); }
+    .btn-light {
+      background: var(--paper-light); color: var(--ink);
+      border: 1px solid var(--ink);
+    }
+    .btn-light:hover { background: var(--ink); color: var(--paper-light); }
+
+    /* ---------- ANIMATION HELPERS ---------- */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: none; }
+    }
+    .reveal { opacity: 0; animation: fade-up 900ms cubic-bezier(.2,.7,.3,1) forwards; }
+    .reveal[data-delay="1"] { animation-delay: 80ms; }
+    .reveal[data-delay="2"] { animation-delay: 180ms; }
+    .reveal[data-delay="3"] { animation-delay: 280ms; }
+    .reveal[data-delay="4"] { animation-delay: 380ms; }
+    .reveal[data-delay="5"] { animation-delay: 500ms; }
+    .reveal[data-delay="6"] { animation-delay: 620ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { animation: none; opacity: 1; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ---------- HERO ---------- */
+    .hero { padding: clamp(3rem, 9vw, 7rem) 0 clamp(2rem, 6vw, 5rem); }
+    .hero-grid {
+      display: grid; gap: clamp(1.5rem, 3vw, 2.5rem);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 920px) {
+      .hero-grid { grid-template-columns: minmax(0,9fr) minmax(0,3fr); align-items: end; }
+    }
+    .hero h1 {
+      font-variation-settings: "opsz" 144, "SOFT" 30;
+    }
+    .hero h1 em {
+      color: var(--moss);
+      font-variation-settings: "opsz" 144, "SOFT" 100;
+      display: inline-block;
+    }
+    .hero h1 .underline-art {
+      display: inline-block; position: relative;
+    }
+    .hero h1 .underline-art::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0.08em;
+      height: 0.06em; background: var(--rust);
+      transform-origin: left;
+      animation: draw 1.4s cubic-bezier(.2,.7,.3,1) forwards;
+      animation-delay: 800ms;
+      transform: scaleX(0);
+    }
+    @keyframes draw { to { transform: scaleX(1); } }
+    .hero-meta {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+      border-left: 1px solid var(--rule);
+      padding-left: 1rem;
+      line-height: 1.8;
+    }
+    @media (min-width: 920px) {
+      .hero-meta { padding-bottom: 0.4rem; }
+    }
+    .hero-meta b { color: var(--ink); font-weight: 500; }
+
+    .hero-lede {
+      margin-top: clamp(1.25rem, 2vw, 2rem);
+      max-width: 38ch;
+      font-family: var(--font-serif);
+      font-variation-settings: "opsz" 14, "SOFT" 60;
+      font-size: clamp(1.1rem, 1.5vw, 1.45rem);
+      line-height: 1.4;
+      color: var(--ink-soft);
+    }
+    .hero-lede em { color: var(--moss); }
+
+    /* Hero form */
+    .waitlist {
+      margin-top: clamp(2rem, 4vw, 3rem);
+      max-width: 520px;
+    }
+    .waitlist-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      border: 1px solid var(--ink);
+      background: var(--paper-light);
+      padding: 0.55rem;
+      border-radius: 999px;
+    }
+    @media (min-width: 540px) {
+      .waitlist-row { flex-direction: row; align-items: center; padding: 0.45rem 0.45rem 0.45rem 1.1rem; }
+    }
+    .waitlist input[type="email"] {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: 0; outline: 0;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      padding: 0.95rem 1rem;
+      color: var(--ink);
+      min-height: 44px;
+    }
+    .waitlist input[type="email"]::placeholder { color: var(--ink-faded); }
+    .waitlist button {
+      width: 100%;
+    }
+    @media (min-width: 540px) { .waitlist button { width: auto; } }
+    .waitlist-note {
+      margin-top: 0.85rem;
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      max-width: 38ch;
+    }
+    .waitlist-note b { color: var(--ink); font-weight: 600; }
+    .waitlist-success {
+      padding: 1.5rem;
+      border: 1px solid var(--moss);
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--moss) 6%, var(--paper-light));
+      text-align: left;
+    }
+    .waitlist-success strong { display: block; font-family: var(--font-serif); font-size: 1.25rem; color: var(--moss); margin-bottom: 0.25rem; }
+    .waitlist-success span { color: var(--ink-soft); font-size: 0.9rem; }
+
+    /* ---------- MANIFESTO ---------- */
+    .manifesto {
+      padding: clamp(3rem, 7vw, 6rem) 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      background: var(--paper-deep);
+    }
+    .manifesto-text {
+      font-family: var(--font-serif);
+      font-variation-settings: "opsz" 24, "SOFT" 40;
+      font-size: clamp(1.35rem, 2.4vw, 1.95rem);
+      line-height: 1.4;
+      color: var(--ink);
+      max-width: 760px;
+    }
+    .manifesto-text em { color: var(--moss); }
+    .dropcap {
+      float: left;
+      font-family: var(--font-serif);
+      font-size: clamp(4rem, 8vw, 5.6rem);
+      line-height: 0.86;
+      padding-right: 0.6rem;
+      padding-top: 0.32rem;
+      font-variation-settings: "SOFT" 0;
+      color: var(--moss);
+    }
+    .manifesto-sig {
+      margin-top: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+    }
+
+    /* ---------- PRINCIPLES ---------- */
+    .principles { padding: clamp(3rem, 7vw, 6rem) 0; }
+    .principles-head { margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+    .principles-head h2 em { color: var(--moss); }
+    .principles-list { display: grid; gap: clamp(2rem, 4vw, 3.5rem); }
+    .principle {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+    }
+    .principle:first-child { border-top: 2px solid var(--ink); }
+    @media (min-width: 820px) {
+      .principle {
+        grid-template-columns: minmax(0,2fr) minmax(0,3fr) minmax(0,3fr);
+      }
+    }
+    .principle-num {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      color: var(--moss);
+      line-height: 1;
+      font-variation-settings: "SOFT" 100;
+    }
+    .principle h3 {
+      font-variation-settings: "opsz" 30, "SOFT" 30;
+    }
+    .principle p { color: var(--ink-soft); margin: 0.5rem 0 0; max-width: 38ch; }
+
+    /* ---------- SAMPLE ANALYSIS ---------- */
+    .sample {
+      padding: clamp(3rem, 7vw, 6rem) 0;
+      background: var(--ink);
+      color: var(--paper);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+    .sample::before {
+      /* override paper grain for the dark section */
+    }
+    .sample .label, .sample .eyebrow { color: var(--rust-soft); }
+    .sample h2 em { color: var(--rust-soft); }
+    .sample h2 {
+      color: var(--paper);
+      font-variation-settings: "opsz" 80, "SOFT" 40;
+    }
+    .sample-intro { color: color-mix(in srgb, var(--paper) 75%, transparent); margin-top: 1rem; }
+    .sample-card {
+      margin-top: clamp(2rem, 4vw, 3rem);
+      background: color-mix(in srgb, var(--paper) 5%, var(--ink));
+      border: 1px solid color-mix(in srgb, var(--paper) 20%, transparent);
+      border-radius: 4px;
+      padding: clamp(1.5rem, 3.5vw, 3rem);
+    }
+    .sample-meta {
+      display: grid;
+      gap: 1.25rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--paper) 15%, transparent);
+      margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+    }
+    @media (min-width: 720px) {
+      .sample-meta { grid-template-columns: 1fr auto; align-items: end; }
+    }
+    .sample-state {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      line-height: 1.1;
+      font-variation-settings: "opsz" 50, "SOFT" 60;
+    }
+    .sample-state em { color: var(--rust-soft); font-style: italic; }
+    .sample-subject {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: color-mix(in srgb, var(--paper) 55%, transparent);
+      margin-top: 0.5rem;
+    }
+    .sample-conf {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.75rem 1.1rem;
+      border: 1px solid color-mix(in srgb, var(--paper) 30%, transparent);
+      border-radius: 999px;
+    }
+    .conf-dial {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      background: conic-gradient(var(--rust-soft) 0%, var(--rust-soft) 92%, color-mix(in srgb, var(--paper) 20%, transparent) 92%, color-mix(in srgb, var(--paper) 20%, transparent) 100%);
+      display: grid; place-items: center;
+      position: relative;
+    }
+    .conf-dial::after {
+      content: ""; position: absolute; inset: 5px; border-radius: 50%; background: color-mix(in srgb, var(--paper) 5%, var(--ink));
+    }
+    .conf-num {
+      position: relative; z-index: 1;
+      font-family: var(--font-mono); font-size: 0.85rem; font-weight: 500;
+      color: var(--paper);
+    }
+    .sample-grid {
+      display: grid; gap: clamp(1.75rem, 3vw, 2.5rem);
+    }
+    @media (min-width: 820px) {
+      .sample-grid { grid-template-columns: minmax(0,7fr) minmax(0,5fr); }
+    }
+    .quote-label, .markers-label {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--rust-soft); margin-bottom: 1rem;
+    }
+    .sample-quote {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-variation-settings: "opsz" 24, "SOFT" 100;
+      font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+      line-height: 1.45;
+      color: var(--paper);
+      margin: 0 0 1.5rem;
+    }
+    .sample-advisory {
+      padding: 1.25rem 1.4rem;
+      border-left: 2px solid var(--rust-soft);
+      background: color-mix(in srgb, var(--rust) 12%, transparent);
+      font-size: 0.92rem;
+      color: color-mix(in srgb, var(--paper) 85%, transparent);
+      line-height: 1.55;
+    }
+    .sample-advisory b {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rust-soft);
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+    }
+    .markers-list { list-style: none; padding: 0; margin: 0; counter-reset: m; }
+    .marker {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.85rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--paper) 10%, transparent);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    .marker:last-child { border-bottom: 0; }
+    .markers-list.in-view .marker {
+      animation: marker-in 500ms cubic-bezier(.2,.7,.3,1) forwards;
+    }
+    .markers-list.in-view .marker:nth-child(1) { animation-delay: 0ms; }
+    .markers-list.in-view .marker:nth-child(2) { animation-delay: 140ms; }
+    .markers-list.in-view .marker:nth-child(3) { animation-delay: 280ms; }
+    .markers-list.in-view .marker:nth-child(4) { animation-delay: 420ms; }
+    .markers-list.in-view .marker:nth-child(5) { animation-delay: 560ms; }
+    .markers-list.in-view .marker:nth-child(6) { animation-delay: 700ms; }
+    @keyframes marker-in {
+      from { opacity: 0; transform: translateX(-8px); }
+      to { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .marker { opacity: 1; transform: none; animation: none !important; }
+    }
+    .marker-num {
+      counter-increment: m;
+      color: var(--rust-soft);
+      letter-spacing: 0.05em;
+    }
+    .marker-num::before { content: counter(m, decimal-leading-zero); }
+    .marker-text { color: color-mix(in srgb, var(--paper) 92%, transparent); }
+    .marker-text b { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--paper); font-variation-settings: "SOFT" 100; }
+
+    /* ---------- HOW IT WORKS ---------- */
+    .how { padding: clamp(3rem, 7vw, 6rem) 0; }
+    .how h2 em { color: var(--moss); }
+    .chapters { margin-top: clamp(2rem, 4vw, 3rem); display: grid; gap: 0.5rem; }
+    @media (min-width: 820px) {
+      .chapters { grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+    }
+    .chapter {
+      padding: clamp(1.5rem, 3vw, 2.25rem);
+      background: var(--paper);
+      border-top: 1px solid var(--rule);
+    }
+    .chapter:first-child { border-top: 0; }
+    @media (min-width: 820px) { .chapter { border-top: 0; } }
+    .chapter-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      color: var(--ink-faded);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .chapter h3 {
+      margin-bottom: 0.75rem;
+      font-variation-settings: "opsz" 30, "SOFT" 40;
+    }
+    .chapter h3 em { color: var(--moss); }
+    .chapter p { color: var(--ink-soft); margin: 0; }
+
+    /* ---------- PRICING ---------- */
+    .pricing {
+      padding: clamp(3rem, 7vw, 6rem) 0;
+      border-top: 1px solid var(--rule);
+      background: var(--paper-deep);
+    }
+    .pricing h2 em { color: var(--moss); }
+    .pricing-table {
+      margin-top: clamp(2rem, 4vw, 3rem);
+      border-top: 2px solid var(--ink);
+    }
+    .pricing-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.25rem 1.5rem;
+      padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+      border-bottom: 1px solid var(--rule);
+      align-items: baseline;
+    }
+    @media (min-width: 820px) {
+      .pricing-row { grid-template-columns: minmax(0,3fr) minmax(0,2fr) minmax(0,5fr) auto; gap: 2.5rem; align-items: center; }
+    }
+    .pricing-row.featured {
+      background: var(--paper-light);
+      padding-left: clamp(1rem, 2vw, 1.5rem);
+      padding-right: clamp(1rem, 2vw, 1.5rem);
+      border-bottom: 1px solid var(--rule);
+      border-left: 3px solid var(--moss);
+    }
+    .pricing-tier {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-variation-settings: "opsz" 40, "SOFT" 30;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .pricing-tier em { color: var(--moss); }
+    .pricing-price {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+    .pricing-price small { color: var(--ink-faded); font-size: 0.85em; }
+    .pricing-feats {
+      list-style: none; padding: 0; margin: 0;
+      font-size: 0.92rem; color: var(--ink-soft);
+    }
+    .pricing-feats li { padding: 0.15rem 0; }
+    .pricing-cta { font-size: 0.85rem; color: var(--moss); font-weight: 500; }
+    .pricing-note {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      text-align: center;
+    }
+
+    /* ---------- FAQ ---------- */
+    .faq { padding: clamp(3rem, 7vw, 6rem) 0; }
+    .faq h2 em { color: var(--moss); }
+    .faq-list { margin-top: clamp(2rem, 4vw, 3rem); border-top: 2px solid var(--ink); }
+    details.q {
+      border-bottom: 1px solid var(--rule);
+      padding: clamp(1.1rem, 2vw, 1.5rem) 0;
+    }
+    details.q summary {
+      display: flex; justify-content: space-between; gap: 1rem;
+      cursor: pointer;
+      list-style: none;
+      font-family: var(--font-serif);
+      font-variation-settings: "opsz" 30, "SOFT" 30;
+      font-size: clamp(1.15rem, 2vw, 1.4rem);
+      line-height: 1.3;
+    }
+    details.q summary::-webkit-details-marker { display: none; }
+    details.q summary::after {
+      content: "+";
+      font-family: var(--font-mono);
+      font-weight: 400;
+      flex-shrink: 0;
+      transition: transform 300ms cubic-bezier(.2,.7,.3,1);
+      color: var(--moss);
+    }
+    details.q[open] summary::after { transform: rotate(45deg); }
+    details.q p { color: var(--ink-soft); margin: 1rem 0 0; max-width: 70ch; line-height: 1.65; }
+
+    /* ---------- FINAL CTA ---------- */
+    .closing {
+      padding: clamp(4rem, 9vw, 8rem) 0;
+      background: var(--ink);
+      color: var(--paper);
+      text-align: center;
+    }
+    .closing h2 {
+      color: var(--paper);
+      font-variation-settings: "opsz" 144, "SOFT" 30;
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      letter-spacing: -0.03em;
+    }
+    .closing h2 em { color: var(--rust-soft); }
+    .closing .hero-lede { color: color-mix(in srgb, var(--paper) 70%, transparent); margin: 1.5rem auto 0; }
+    .closing .waitlist { margin: clamp(2rem, 4vw, 3rem) auto 0; }
+    .closing .waitlist-row { border-color: color-mix(in srgb, var(--paper) 60%, transparent); background: color-mix(in srgb, var(--paper) 5%, transparent); }
+    .closing .waitlist input[type="email"] { color: var(--paper); }
+    .closing .waitlist input[type="email"]::placeholder { color: color-mix(in srgb, var(--paper) 50%, transparent); }
+    .closing .btn { background: var(--paper-light); color: var(--ink); }
+    .closing .btn:hover { background: var(--rust-soft); color: var(--ink); }
+    .closing .waitlist-note { color: color-mix(in srgb, var(--paper) 60%, transparent); margin: 1.5rem auto 0; }
+
+    /* ---------- FOOTER ---------- */
+    .footer {
+      padding: 3rem 0 4rem;
+      background: var(--ink);
+      color: color-mix(in srgb, var(--paper) 60%, transparent);
+      font-size: 0.85rem;
+    }
+    .footer-inner { display: grid; gap: 1.5rem; }
+    @media (min-width: 720px) {
+      .footer-inner { grid-template-columns: 1fr auto; align-items: end; }
+    }
+    .footer-brand {
+      font-family: var(--font-serif);
+      color: var(--paper);
+      font-size: 1.15rem;
+      font-variation-settings: "SOFT" 0;
+    }
+    .footer-brand em { color: var(--rust-soft); font-variation-settings: "SOFT" 100; }
+    .footer-tag { margin-top: 0.5rem; color: color-mix(in srgb, var(--paper) 55%, transparent); }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+    .footer-links a { color: color-mix(in srgb, var(--paper) 75%, transparent); text-decoration: none; transition: color 200ms; }
+    .footer-links a:hover { color: var(--rust-soft); }
+    .legal {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid color-mix(in srgb, var(--paper) 12%, transparent);
+      font-size: 0.78rem;
+      max-width: 760px;
+      color: color-mix(in srgb, var(--paper) 50%, transparent);
+      line-height: 1.6;
     }
   </style>
-
-  <!-- Cloudflare Web Analytics — replace TOKEN once deployed (free, no cookie banner needed) -->
-  <!-- <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_TOKEN"}'></script> -->
 </head>
 
-<body class="bg-white text-slate-900 antialiased selection:bg-indigo-100">
+<body>
+  <!-- ============ MASTHEAD (editorial signal) ============ -->
+  <header class="masthead">
+    <div class="container masthead-inner">
+      <span>Vol. 01 · Issue 01</span>
+      <span>A behavioral instrument · Made in California</span>
+      <span>Coming Summer 2026</span>
+    </div>
+  </header>
 
   <!-- ============ NAV ============ -->
-  <nav class="border-b border-slate-100 bg-white/80 backdrop-blur sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" class="text-base font-bold tracking-tight">
-        pettranslator<span class="text-indigo-600 font-semibold">.ai</span>
-      </a>
-      <div class="flex items-center space-x-2 sm:space-x-6 text-sm font-medium text-slate-600">
-        <a href="#how-it-works" class="hidden sm:inline hover:text-slate-900 transition">How it works</a>
-        <a href="#sample" class="hidden sm:inline hover:text-slate-900 transition">Sample</a>
-        <a href="#pricing" class="hidden sm:inline hover:text-slate-900 transition">Pricing</a>
-        <a href="#waitlist" class="bg-slate-900 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-slate-800 transition">
-          Join waitlist
-        </a>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="brand">pettranslator<em>.ai</em></a>
+      <div class="nav-links">
+        <a href="#manifesto">The premise</a>
+        <a href="#sample">Sample report</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#waitlist-end" class="btn">Join waitlist</a>
       </div>
+      <a href="#waitlist-end" class="btn" style="padding: 0.55rem 1.1rem; font-size: 0.78rem; min-height: 38px;">
+        <span style="display:inline;">Join</span>
+      </a>
     </div>
+    <style>
+      @media (min-width: 820px) { .nav-inner > .btn:last-child { display: none; } }
+    </style>
   </nav>
 
   <!-- ============ HERO ============ -->
-  <section class="max-w-6xl mx-auto px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
-    <div class="max-w-3xl mx-auto text-center">
-      <div class="inline-flex items-center space-x-2 bg-indigo-50 text-indigo-700 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-8">
-        <span class="w-1.5 h-1.5 bg-indigo-600 rounded-full animate-pulse"></span>
-        <span>Launching soon · Early access open</span>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow reveal" data-delay="1">A scientific instrument for pet owners</p>
+          <h1 class="reveal" data-delay="2" style="margin-top: 1.25rem;">
+            Know what your pet is <em>actually</em><br />
+            <span class="underline-art">trying to say.</span>
+          </h1>
+          <p class="hero-lede reveal" data-delay="3">
+            Upload a ten-second clip. A multimodal AI documents body language, vocalization, and context the way a <em>veterinary behaviorist</em> would — then translates it into plain English.
+          </p>
+
+          <form id="waitlist-form-hero" class="waitlist reveal" data-delay="4" action="/api/waitlist" method="POST">
+            <div class="waitlist-row">
+              <input
+                type="email"
+                name="email"
+                required
+                inputmode="email"
+                autocomplete="email"
+                placeholder="your@email.com"
+                aria-label="Email address"
+              />
+              <input type="hidden" name="source" value="hero" />
+              <button type="submit" class="btn">Get early access →</button>
+            </div>
+            <p class="waitlist-note">First <b>500 signups</b> get three months of Pro on us. No credit card.</p>
+          </form>
+        </div>
+
+        <aside class="hero-meta reveal" data-delay="5">
+          Issue №01 <br />
+          Status · <b>Pre-launch</b><br />
+          Methodology · multimodal AI, peer-reviewed<br />
+          Focus · canine + feline<br />
+          Privacy · <b>your video never trains AI</b><br />
+          Delivery · 30 seconds
+        </aside>
       </div>
+    </div>
+  </section>
 
-      <h1 class="text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1]">
-        Know what your pet is
-        <span class="gradient-text">actually</span>
-        telling you.
-      </h1>
-
-      <p class="mt-6 text-lg sm:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
-        Upload a 10-second video. Our AI analyzes body language, vocalization, and context the way a certified animal behaviorist would — and gives you a plain-English translation in under 30 seconds.
+  <!-- ============ MANIFESTO ============ -->
+  <section class="manifesto" id="manifesto">
+    <div class="container narrow">
+      <p class="label reveal">§ 01 · The premise</p>
+      <p class="manifesto-text" style="margin-top: 1.25rem;">
+        <span class="dropcap">M</span>ost pet translator apps are entertainment products — cartoon translations that monetize through weekly subscription rugpulls. We built the opposite: a clinical instrument that <em>documents what it sees</em> in your pet's body language, weighs the context you provide, and returns the kind of analysis a board-certified behaviorist would write in a session note.
       </p>
-
-      <!-- ============ WAITLIST FORM (HERO) ============ -->
-      <form
-        id="waitlist-form-hero"
-        action="/api/waitlist"
-        method="POST"
-        class="mt-10 max-w-md mx-auto"
-      >
-        <div class="flex flex-col sm:flex-row gap-3">
-          <input
-            type="email"
-            name="email"
-            required
-            placeholder="your@email.com"
-            class="flex-1 px-5 py-3.5 rounded-full border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          />
-          <input type="hidden" name="source" value="hero" />
-          <input type="hidden" name="_subject" value="New PetTranslator.ai waitlist signup (hero)" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_template" value="table" />
-          <button
-            type="submit"
-            class="bg-slate-900 text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-slate-800 transition whitespace-nowrap shadow-sm"
-          >
-            Get early access →
-          </button>
-        </div>
-        <p class="mt-4 text-xs text-slate-500">
-          First 500 signups get <strong class="text-slate-900">3 months of Pro free</strong> at launch. No credit card required.
-        </p>
-      </form>
-    </div>
-
-    <!-- Trust strip -->
-    <div class="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-y-6 text-center max-w-4xl mx-auto">
-      <div>
-        <div class="text-2xl font-bold text-slate-900">Multimodal AI</div>
-        <div class="text-xs text-slate-500 mt-1">Video + audio + context</div>
-      </div>
-      <div>
-        <div class="text-2xl font-bold text-slate-900">Behaviorist-grade</div>
-        <div class="text-xs text-slate-500 mt-1">Methodology, not gimmick</div>
-      </div>
-      <div>
-        <div class="text-2xl font-bold text-slate-900">Privacy-first</div>
-        <div class="text-xs text-slate-500 mt-1">Never used for AI training</div>
-      </div>
-      <div>
-        <div class="text-2xl font-bold text-slate-900">30 seconds</div>
-        <div class="text-xs text-slate-500 mt-1">Upload to insight</div>
-      </div>
+      <p class="manifesto-sig">— The PetTranslator team, Spring 2026</p>
     </div>
   </section>
 
-  <!-- ============ PROBLEM / DIFFERENTIATION ============ -->
-  <section class="bg-slate-50 border-y border-slate-100 py-24">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">
-          Most pet translator apps are toys.<br />This isn't one.
-        </h2>
-        <p class="mt-4 text-slate-600 text-lg max-w-2xl mx-auto">
-          Cartoon translations charging weekly subscriptions aren't a category we're trying to win. We built something different.
-        </p>
+  <!-- ============ PRINCIPLES ============ -->
+  <section class="principles">
+    <div class="container">
+      <div class="principles-head narrower">
+        <p class="label">§ 02 · How we think about it</p>
+        <h2 style="margin-top: 1rem;">Three principles, applied <em>strictly</em>.</h2>
       </div>
 
-      <div class="grid sm:grid-cols-2 gap-6">
-        <!-- Bad -->
-        <div class="bg-white rounded-2xl p-8 border border-slate-200">
-          <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">Typical bark translator app</div>
-          <ul class="space-y-3 text-sm text-slate-600">
-            <li class="flex items-start"><span class="text-slate-400 mr-3 mt-0.5">×</span><span>Audio-only soundboard</span></li>
-            <li class="flex items-start"><span class="text-slate-400 mr-3 mt-0.5">×</span><span>Cartoon outputs ("I want a treat!")</span></li>
-            <li class="flex items-start"><span class="text-slate-400 mr-3 mt-0.5">×</span><span>Weekly trial → surprise $9.99 charge</span></li>
-            <li class="flex items-start"><span class="text-slate-400 mr-3 mt-0.5">×</span><span>Built by app studios</span></li>
-          </ul>
+      <div class="principles-list">
+        <div class="principle">
+          <div class="principle-num">i.</div>
+          <h3>Observation before interpretation.</h3>
+          <p>The model documents tail carriage, ear angle, jaw tension, pupil dilation, posture, and vocal pitch <em>first</em>, then reasons from there. No cartoon mind-reading. Every analysis shows the markers it found.</p>
         </div>
-        <!-- Good -->
-        <div class="bg-slate-900 text-white rounded-2xl p-8 border border-slate-900 relative">
-          <div class="absolute -top-3 left-8 bg-indigo-600 text-white text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full">PetTranslator.ai</div>
-          <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">What we built</div>
-          <ul class="space-y-3 text-sm text-slate-200">
-            <li class="flex items-start"><span class="text-indigo-400 mr-3 mt-0.5">✓</span><span>Multimodal: video + audio + behavioral context</span></li>
-            <li class="flex items-start"><span class="text-indigo-400 mr-3 mt-0.5">✓</span><span>Clinical behavioral analysis in plain English</span></li>
-            <li class="flex items-start"><span class="text-indigo-400 mr-3 mt-0.5">✓</span><span>$4.99/month, cancel in one click</span></li>
-            <li class="flex items-start"><span class="text-indigo-400 mr-3 mt-0.5">✓</span><span>Grounded in veterinary behavioral science</span></li>
-          </ul>
+        <div class="principle">
+          <div class="principle-num">ii.</div>
+          <h3>Honest confidence, never inflated.</h3>
+          <p>Every report carries a confidence score, calibrated against the clarity of the signals. Short clip, poor lighting, ambiguous markers — you'll see a lower number, not a confident guess.</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ HOW IT WORKS ============ -->
-  <section id="how-it-works" class="py-24">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Three steps. About thirty seconds.</h2>
-      </div>
-
-      <div class="grid sm:grid-cols-3 gap-8">
-        <div class="text-center">
-          <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 font-bold">1</div>
-          <h3 class="font-semibold text-slate-900 mb-2">Upload</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Record a short clip on your phone or upload from camera roll. Up to 30 seconds. Dog, cat, or both.</p>
-        </div>
-        <div class="text-center">
-          <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 font-bold">2</div>
-          <h3 class="font-semibold text-slate-900 mb-2">Add context</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">A single sentence about what's happening. <em>"Whining near the front door"</em> means something very different from <em>"whining at an empty food bowl."</em></p>
-        </div>
-        <div class="text-center">
-          <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 font-bold">3</div>
-          <h3 class="font-semibold text-slate-900 mb-2">Read the report</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Observed biometric markers, primary emotional state, AI confidence score, and an Owner Action Plan you can actually use today.</p>
+        <div class="principle">
+          <div class="principle-num">iii.</div>
+          <h3>Behavior, not medicine.</h3>
+          <p>If the AI sees signs of pain, illness, or distress that need a veterinarian, it stops and tells you. We are emphatically <em>not</em> a diagnostic tool — and we say so out loud.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ============ SAMPLE ANALYSIS ============ -->
-  <section id="sample" class="bg-slate-50 border-y border-slate-100 py-24">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">This is what a real analysis looks like.</h2>
-        <p class="mt-4 text-slate-600 text-lg max-w-2xl mx-auto">
-          No "Woof! Feed me!" cartoon translations. Real behavioral signals, mapped to real recommendations.
-        </p>
-      </div>
+  <section class="sample" id="sample">
+    <div class="container">
+      <p class="label">§ 03 · Specimen report</p>
+      <h2 style="margin-top: 1rem;">This is what a <em>real</em> analysis looks like.</h2>
+      <p class="sample-intro narrower" style="margin-top: 1rem;">
+        Not "Woof! Feed me!" cartoons. Behavioral signals, mapped to recommendations you can act on today.
+      </p>
 
-      <!-- Sample report card -->
-      <div class="max-w-5xl mx-auto bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm">
-        <!-- Header -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-100 pb-6 mb-8">
+      <article class="sample-card">
+        <header class="sample-meta">
           <div>
-            <span class="text-xs font-semibold text-indigo-600 tracking-wider uppercase">Sample Report</span>
-            <h3 class="text-2xl font-bold tracking-tight text-slate-900 mt-1">Acute Environmental Stress</h3>
-            <p class="text-sm text-slate-500 mt-1">Subject: Canine · Mixed Breed</p>
+            <p class="label" style="margin-bottom: 0.4rem;">Report №8492 · Canine</p>
+            <h3 class="sample-state">Acute environmental <em>stress.</em></h3>
+            <p class="sample-subject">Mixed breed · 23s indoor clip · evening lighting</p>
           </div>
-          <div class="mt-4 md:mt-0 flex items-center space-x-3 bg-slate-50 border border-slate-200 rounded-2xl p-3">
-            <div class="relative w-12 h-12 rounded-full border-4 border-indigo-600 flex items-center justify-center">
-              <span class="text-xs font-bold text-slate-900">92%</span>
-            </div>
+          <div class="sample-conf">
+            <div class="conf-dial"><span class="conf-num" id="confnum">92%</span></div>
             <div>
-              <div class="text-xs font-semibold text-slate-900">AI Confidence</div>
-              <div class="text-xs text-slate-500">High signal-to-noise</div>
+              <div class="label" style="margin-bottom: 0.15rem;">AI Confidence</div>
+              <div style="font-size: 0.8rem; color: color-mix(in srgb, var(--paper) 65%, transparent);">High signal-to-noise</div>
             </div>
+          </div>
+        </header>
+
+        <div class="sample-grid">
+          <div>
+            <p class="quote-label">Decoded intent</p>
+            <blockquote class="sample-quote">
+              "I'm uncertain and overwhelmed by what's in front of me. I want to look away to avoid conflict, but I'm holding my body tense in case I need to move. I'm trying to calm myself with yawns and lip licks — please give me some space."
+            </blockquote>
+
+            <div class="sample-advisory">
+              <b>Owner action plan</b>
+              Your dog is exhibiting classic <em>displacement signals</em> — they're approaching their emotional threshold. Avoid direct eye contact, don't bend over them, give a quiet exit route from the room. Don't force interaction with whatever is currently near them.
+            </div>
+          </div>
+
+          <div>
+            <p class="markers-label">Observed biometric cues</p>
+            <ol class="markers-list" id="markers">
+              <li class="marker"><span class="marker-num"></span><span class="marker-text"><b>Lip-licking</b> absent of food proximity</span></li>
+              <li class="marker"><span class="marker-num"></span><span class="marker-text"><b>Yawning</b> as physiological displacement</span></li>
+              <li class="marker"><span class="marker-num"></span><span class="marker-text"><b>Whale-eye</b> with sclera visible at corners</span></li>
+              <li class="marker"><span class="marker-num"></span><span class="marker-text"><b>Tense jaw</b> with tight commissures</span></li>
+              <li class="marker"><span class="marker-num"></span><span class="marker-text"><b>Low-amplitude wag</b> held below spine</span></li>
+              <li class="marker"><span class="marker-num"></span><span class="marker-text"><b>Weight shifted backward</b> away from stimulus</span></li>
+            </ol>
           </div>
         </div>
-
-        <div class="grid lg:grid-cols-12 gap-6 items-start">
-          <!-- Left: Translation + Action -->
-          <div class="lg:col-span-7 space-y-5">
-            <div>
-              <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Decoded Intent</h4>
-              <blockquote class="text-lg font-medium text-slate-900 leading-relaxed italic">
-                "I'm feeling highly uncertain and overwhelmed by what's happening in front of me. I want to look away to avoid conflict, but I'm keeping my body tense in case I need to move. I'm trying to calm myself down by yawning and licking my lips — I need you to give me some space."
-              </blockquote>
-            </div>
-
-            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6">
-              <div class="flex items-start space-x-3">
-                <svg class="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                <div>
-                  <h5 class="text-xs font-semibold text-amber-900 uppercase tracking-wider">Owner Action Plan</h5>
-                  <p class="text-sm text-amber-900 leading-relaxed mt-2">
-                    Your dog is exhibiting classic 'displacement signals' — they're approaching their emotional threshold. Avoid direct eye contact or bending over them. Back away slightly, give them a quiet exit route, and don't force interaction with whatever object or person is currently near them.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right: Biometric markers -->
-          <div class="lg:col-span-5">
-            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-              <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-3 mb-4">Observed Biometric Cues</h4>
-              <ul class="space-y-3">
-                <li class="flex items-start space-x-2.5 text-sm">
-                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
-                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Lip-licking</strong> absent of food proximity</span>
-                </li>
-                <li class="flex items-start space-x-2.5 text-sm">
-                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
-                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Yawning</strong> as physiological displacement</span>
-                </li>
-                <li class="flex items-start space-x-2.5 text-sm">
-                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
-                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Whale-eye</strong> with sclera visible</span>
-                </li>
-                <li class="flex items-start space-x-2.5 text-sm">
-                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
-                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Tense jaw</strong> with tight commissures</span>
-                </li>
-                <li class="flex items-start space-x-2.5 text-sm">
-                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
-                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Low-amplitude wag</strong> below spine line</span>
-                </li>
-                <li class="flex items-start space-x-2.5 text-sm">
-                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
-                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Weight shifted backward</strong> away from stimulus</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      </article>
     </div>
   </section>
 
-  <!-- ============ WHAT YOU GET ============ -->
-  <section class="py-24">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Built for owners who take their pets seriously.</h2>
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="how">
+    <div class="container">
+      <div class="principles-head narrower">
+        <p class="label">§ 04 · The process</p>
+        <h2 style="margin-top: 1rem;">Three chapters, about <em>thirty seconds.</em></h2>
       </div>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div>
-          <div class="text-indigo-600 mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg></div>
-          <h3 class="font-semibold text-slate-900 mb-1.5">Biometric scan</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Documents tail carriage, ear position, jaw tension, pupil dilation, posture, vocal pitch — the same markers a behaviorist would look for.</p>
-        </div>
-        <div>
-          <div class="text-indigo-600 mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg></div>
-          <h3 class="font-semibold text-slate-900 mb-1.5">Owner action plan</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Every analysis ends with what to do next. Not a horoscope — a specific, behavior-backed recommendation.</p>
-        </div>
-        <div>
-          <div class="text-indigo-600 mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
-          <h3 class="font-semibold text-slate-900 mb-1.5">Pet history</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Track mood, stress, and behavioral patterns over time. Spot changes early — before they become problems.</p>
-        </div>
-        <div>
-          <div class="text-indigo-600 mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
-          <h3 class="font-semibold text-slate-900 mb-1.5">Vet-ready PDF</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Download a clean PDF of any analysis to share with your veterinarian or trainer.</p>
-        </div>
+      <div class="chapters">
+        <article class="chapter">
+          <div class="chapter-num">Chapter I — Upload</div>
+          <h3>Record. <em>Or import.</em></h3>
+          <p>Up to thirty seconds of dog or cat, from your phone or camera roll. No app to install. Works on every modern browser.</p>
+        </article>
+        <article class="chapter">
+          <div class="chapter-num">Chapter II — Context</div>
+          <h3>One sentence <em>changes everything.</em></h3>
+          <p>"Whining near the front door" means something different from "whining at an empty food bowl." The AI weighs your context, but the physical signals lead.</p>
+        </article>
+        <article class="chapter">
+          <div class="chapter-num">Chapter III — Read</div>
+          <h3>The report, <em>delivered.</em></h3>
+          <p>Observed markers, primary emotional state, confidence score, and an owner action plan you can use today. PDF-exportable, on Pro.</p>
+        </article>
       </div>
     </div>
   </section>
 
   <!-- ============ PRICING ============ -->
-  <section id="pricing" class="bg-slate-50 border-y border-slate-100 py-24">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Simple pricing. Cancel anytime.</h2>
-        <p class="mt-4 text-slate-600 text-lg max-w-2xl mx-auto">
-          Free tier is rate-limited, not feature-limited. The same AI on every plan.
-        </p>
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="principles-head narrower">
+        <p class="label">§ 05 · Subscription</p>
+        <h2 style="margin-top: 1rem;">Simple pricing. <em>Cancel in one click.</em></h2>
       </div>
 
-      <div class="grid sm:grid-cols-3 gap-6">
-        <!-- Free -->
-        <div class="bg-white border border-slate-200 rounded-2xl p-8">
-          <h3 class="font-semibold text-slate-900">Free</h3>
-          <div class="mt-4 mb-6"><span class="text-4xl font-bold">$0</span><span class="text-slate-500 text-sm"> forever</span></div>
-          <ul class="space-y-2.5 text-sm text-slate-600">
-            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>3 analyses per day</span></li>
-            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>Basic behavioral report</span></li>
-            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>1 pet profile</span></li>
-            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>7-day history</span></li>
-          </ul>
-        </div>
-
-        <!-- Premium (highlighted) -->
-        <div class="bg-slate-900 text-white border border-slate-900 rounded-2xl p-8 relative shadow-lg">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full">Recommended</div>
-          <h3 class="font-semibold">Premium</h3>
-          <div class="mt-4 mb-6"><span class="text-4xl font-bold">$4.99</span><span class="text-slate-400 text-sm"> /month</span></div>
-          <ul class="space-y-2.5 text-sm text-slate-200">
-            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Unlimited analyses</span></li>
-            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Full biometric breakdown</span></li>
-            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Up to 5 pet profiles</span></li>
-            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Unlimited history</span></li>
-            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Vet-ready PDF export</span></li>
-            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Priority processing</span></li>
-          </ul>
-        </div>
-
-        <!-- Annual -->
-        <div class="bg-white border border-slate-200 rounded-2xl p-8">
-          <h3 class="font-semibold text-slate-900">Annual</h3>
-          <div class="mt-4 mb-6">
-            <span class="text-4xl font-bold">$39.99</span><span class="text-slate-500 text-sm"> /year</span>
-            <div class="text-xs text-indigo-600 font-semibold mt-1">Save 33%</div>
+      <div class="pricing-table">
+        <div class="pricing-row">
+          <div>
+            <div class="pricing-tier">Free</div>
+            <div class="label" style="margin-top:0.5rem;">Always</div>
           </div>
-          <ul class="space-y-2.5 text-sm text-slate-600">
-            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>Everything in Premium</span></li>
-            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>Two months free</span></li>
-            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>Locked-in renewal price</span></li>
+          <div class="pricing-price">$0</div>
+          <ul class="pricing-feats">
+            <li>· 3 analyses per day</li>
+            <li>· Basic behavioral report</li>
+            <li>· 1 pet profile, 7-day history</li>
           </ul>
+          <span class="pricing-cta">Start free →</span>
+        </div>
+
+        <div class="pricing-row featured">
+          <div>
+            <div class="pricing-tier"><em>Premium</em></div>
+            <div class="label" style="margin-top:0.5rem;">Recommended</div>
+          </div>
+          <div class="pricing-price">$4.99 <small>/ month</small></div>
+          <ul class="pricing-feats">
+            <li>· Unlimited analyses, full biometric breakdown</li>
+            <li>· Up to 5 pet profiles, unlimited history</li>
+            <li>· Vet-ready PDF export, priority processing</li>
+          </ul>
+          <span class="pricing-cta">Get Premium →</span>
+        </div>
+
+        <div class="pricing-row">
+          <div>
+            <div class="pricing-tier">Annual</div>
+            <div class="label" style="margin-top:0.5rem;">Save 33%</div>
+          </div>
+          <div class="pricing-price">$39.99 <small>/ year</small></div>
+          <ul class="pricing-feats">
+            <li>· Everything in Premium</li>
+            <li>· Two months free, locked-in renewal</li>
+          </ul>
+          <span class="pricing-cta">Go annual →</span>
         </div>
       </div>
 
-      <p class="text-center text-sm text-slate-500 mt-8">
-        Cancel in one click — no email, no phone call. 7-day money-back guarantee on first charge.
-      </p>
+      <p class="pricing-note">Same AI on every plan. Free is rate-limited, not feature-limited. 7-day money-back guarantee on first charge.</p>
     </div>
   </section>
 
   <!-- ============ FAQ ============ -->
-  <section class="py-24">
-    <div class="max-w-3xl mx-auto px-6">
-      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-center mb-12">Common questions</h2>
+  <section class="faq">
+    <div class="container narrow">
+      <div class="principles-head">
+        <p class="label">§ 06 · Common questions</p>
+        <h2 style="margin-top: 1rem;">You're <em>right</em> to ask.</h2>
+      </div>
 
-      <div class="space-y-3">
-        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
-          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
-            Is this actually scientific or is it just AI making things up?
-            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
-          </summary>
-          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-            We use multimodal AI — it looks at video, listens to audio, and weighs the context you provide. The system is prompted using published animal behavioral science to identify physical markers (tail carriage, ear position, vocal pitch, posture) before generating a translation. Every report includes a confidence score so you know how clear the signals were.
-          </p>
+      <div class="faq-list">
+        <details class="q">
+          <summary>Is this actually scientific or is the AI making things up?</summary>
+          <p>We use multimodal AI — it watches the video, listens to the audio, and weighs the context you provide. The system is prompted with published animal behavioral science to identify physical markers (tail carriage, ear position, vocal pitch, posture) <em>before</em> generating an interpretation. Every report includes a confidence score so you know how clear the signals were.</p>
         </details>
-
-        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
-          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
-            Is this a replacement for a vet?
-            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
-          </summary>
-          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-            No. PetTranslator.ai is a behavioral analysis tool, not a medical diagnostic. If your pet shows signs of pain, illness, or sudden behavioral change, see a licensed veterinarian. Our PDF export is designed to <em>help</em> that conversation, not replace it.
-          </p>
+        <details class="q">
+          <summary>Is this a replacement for a vet?</summary>
+          <p>Categorically not. PetTranslator.ai is a behavioral analysis tool, not a medical diagnostic. If your pet shows signs of pain, illness, or sudden behavioral change, see a licensed veterinarian. Our PDF export is designed to <em>help</em> that conversation, not replace it.</p>
         </details>
-
-        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
-          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
-            What pets does it work with?
-            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
-          </summary>
-          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-            Dogs and cats are fully supported. Other companion animals (rabbits, birds, small mammals) are coming after launch.
-          </p>
+        <details class="q">
+          <summary>What pets does it work with?</summary>
+          <p>Dogs and cats are fully supported at launch. Other companion animals (rabbits, birds, small mammals) follow — we want them right before we ship them.</p>
         </details>
-
-        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
-          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
-            How is my pet's video used?
-            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
-          </summary>
-          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-            Your video is processed by our AI partners (OpenAI / Anthropic) under their enterprise privacy terms and is <strong>not</strong> used for model training. We do not sell, share, or publish your uploads. You can delete any analysis from your account at any time.
-          </p>
+        <details class="q">
+          <summary>How is my pet's video used?</summary>
+          <p>Processed by our AI partners (OpenAI, Anthropic) under enterprise privacy terms — your content is <em>not</em> used for model training. We do not sell, share, or publish your uploads. You can delete any analysis at any time.</p>
         </details>
-
-        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
-          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
-            When does it launch?
-            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
-          </summary>
-          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-            We're aiming for public launch in late summer 2026. Early-access signups get a heads up 2 weeks before public, plus 3 months of Pro free for the first 500 to join.
-          </p>
+        <details class="q">
+          <summary>When does it launch?</summary>
+          <p>We're aiming for public launch in late summer 2026. Early-access signups get a heads-up two weeks before public — plus three months of Pro free for the first 500 to join.</p>
         </details>
-
-        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
-          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
-            Do you have an iOS / Android app?
-            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
-          </summary>
-          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-            Not yet. The web app will work on every modern phone and desktop browser at launch. We'll add native apps once we know exactly which features owners use most.
-          </p>
+        <details class="q">
+          <summary>Is there an iOS / Android app?</summary>
+          <p>Not at launch. The web app works on every modern phone and desktop browser. We'll add native apps once we know exactly which features owners use most.</p>
         </details>
       </div>
     </div>
   </section>
 
   <!-- ============ FINAL CTA ============ -->
-  <section id="waitlist" class="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-24">
-    <div class="max-w-2xl mx-auto px-6 text-center">
-      <h2 class="text-3xl sm:text-5xl font-bold tracking-tight">Be first in line.</h2>
-      <p class="mt-5 text-lg text-slate-300 leading-relaxed">
-        Join the waitlist and get 3 months of Pro free at launch — limited to the first 500 signups.
+  <section class="closing" id="waitlist-end">
+    <div class="container narrower">
+      <p class="label" style="color: var(--rust-soft); margin-bottom: 1.5rem;">§ 07 · The list</p>
+      <h2>Be first <em>in line.</em></h2>
+      <p class="hero-lede">
+        Join the waitlist and get three months of Pro free at launch — limited to the first 500 signups.
       </p>
 
-      <form
-        id="waitlist-form-footer"
-        action="/api/waitlist"
-        method="POST"
-        class="mt-10"
-      >
-        <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+      <form id="waitlist-form-footer" class="waitlist" action="/api/waitlist" method="POST">
+        <div class="waitlist-row">
           <input
             type="email"
             name="email"
             required
+            inputmode="email"
+            autocomplete="email"
             placeholder="your@email.com"
-            class="flex-1 px-5 py-3.5 rounded-full text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            aria-label="Email address"
           />
           <input type="hidden" name="source" value="footer" />
-          <input type="hidden" name="_subject" value="New PetTranslator.ai waitlist signup (footer)" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_template" value="table" />
-          <button
-            type="submit"
-            class="bg-white text-slate-900 px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-slate-100 transition whitespace-nowrap shadow-sm"
-          >
-            Get early access →
-          </button>
+          <button type="submit" class="btn">Send me the launch →</button>
         </div>
-        <p class="mt-4 text-xs text-slate-400">No credit card. No spam. Unsubscribe with one click.</p>
+        <p class="waitlist-note">No credit card. No spam. Unsubscribe with one click.</p>
       </form>
     </div>
   </section>
 
   <!-- ============ FOOTER ============ -->
-  <footer class="border-t border-slate-100 py-12">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-        <div class="text-sm text-slate-500">
-          © 2026 PetTranslator.ai · Understand your pet, scientifically.
-        </div>
-        <div class="flex space-x-6 text-sm text-slate-500">
-          <a href="/terms" class="hover:text-slate-900 transition">Terms</a>
-          <a href="/privacy" class="hover:text-slate-900 transition">Privacy</a>
-          <a href="/refund-policy" class="hover:text-slate-900 transition">Refunds</a>
-          <a href="mailto:hello@pettranslator.ai" class="hover:text-slate-900 transition">Contact</a>
-        </div>
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">pettranslator<em>.ai</em></div>
+        <div class="footer-tag">Understand your pet, scientifically.</div>
       </div>
-      <p class="mt-8 text-xs text-slate-400 max-w-3xl">
+      <div class="footer-links">
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/refund-policy">Refunds</a>
+        <a href="mailto:hello@pettranslator.ai">Contact</a>
+      </div>
+    </div>
+    <div class="container">
+      <p class="legal">
         PetTranslator.ai provides behavioral analysis for educational and entertainment purposes. It is not a substitute for professional veterinary care, diagnosis, or treatment. If you believe your pet may be ill, injured, or in distress, contact a licensed veterinarian immediately.
       </p>
     </div>
   </footer>
 
-  <!-- ============ FORM SUCCESS HANDLER ============ -->
+  <!-- ============ INTERACTIVITY ============ -->
   <script>
-    // Intercept form submissions, show inline success instead of full-page redirect
-    document.querySelectorAll('form[id^="waitlist-form"]').forEach(form => {
-      form.addEventListener('submit', async (e) => {
+    // Scroll-triggered marker reveal in the specimen report
+    (function () {
+      const markers = document.getElementById("markers");
+      if (!markers) return;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            markers.classList.add("in-view");
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.25 });
+      observer.observe(markers);
+    })();
+
+    // Count-up confidence number
+    (function () {
+      const el = document.getElementById("confnum");
+      if (!el) return;
+      const target = 92;
+      let started = false;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && !started) {
+            started = true;
+            let n = 0;
+            const step = () => {
+              n += 4;
+              if (n >= target) { el.textContent = target + "%"; return; }
+              el.textContent = n + "%";
+              requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.5 });
+      observer.observe(el);
+    })();
+
+    // Form submission → /api/waitlist (Vercel function)
+    document.querySelectorAll('form[id^="waitlist-form"]').forEach((form) => {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
         const btn = form.querySelector('button[type="submit"]');
         const originalText = btn.textContent;
         btn.disabled = true;
-        btn.textContent = 'Submitting...';
+        btn.textContent = "Submitting…";
 
         try {
           const fd = new FormData(form);
@@ -519,32 +1090,26 @@
           for (const [k, v] of fd.entries()) payload[k] = v;
 
           const response = await fetch(form.action, {
-            method: 'POST',
+            method: "POST",
             body: JSON.stringify(payload),
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
           });
 
-          if (response.ok) {
-            form.innerHTML = `
-              <div class="text-center py-6">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 mb-3">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                </div>
-                <p class="font-semibold text-slate-900">You're on the list.</p>
-                <p class="text-sm text-slate-500 mt-1">We'll email you the moment we launch.</p>
-              </div>
-            `;
-          } else {
-            throw new Error('Submission failed');
-          }
+          if (!response.ok) throw new Error("Submission failed");
+
+          form.innerHTML = `
+            <div class="waitlist-success">
+              <strong>You're on the list.</strong>
+              <span>We'll email you the moment we launch — and remind you about the Pro head-start.</span>
+            </div>
+          `;
         } catch (err) {
           btn.disabled = false;
           btn.textContent = originalText;
-          alert('Something went wrong. Please try again or email hello@pettranslator.ai');
+          alert("Something went wrong. Please try again or email hello@pettranslator.ai");
         }
       });
     });
   </script>
-
 </body>
 </html>
