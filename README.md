@@ -15,6 +15,15 @@ python3 -m http.server 8000
 
 Auto-deploys to Vercel on every push to `main`. Live at https://pettranslator.ai.
 
-## Form
+## Waitlist form
 
-Waitlist emails are collected via [formsubmit.co](https://formsubmit.co) and forwarded to `khabir.neelum@gmail.com`. To swap providers later (Formspree, ConvertKit, etc.), update the two `<form action="...">` URLs and the matching hidden fields.
+Form posts to `/api/waitlist`, a Vercel serverless function (see `api/waitlist.js`).
+Every signup is logged to Vercel's runtime logs and is the source of truth.
+
+To also receive signups by email, set one of these env vars in
+Vercel → Project → Settings → Environment Variables:
+
+- `WEB3FORMS_KEY` — free 250 submissions/mo, sign up at https://web3forms.com
+- `RESEND_API_KEY` — better long-term, free tier at https://resend.com
+
+To view signups now: Vercel dashboard → pettranslator project → Logs → filter by `/api/waitlist`.
