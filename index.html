@@ -189,6 +189,10 @@
       transition: color 200ms;
     }
     .nav-links a:hover { color: var(--ink); }
+    /* .btn anchors in the nav have their own color rules — beat the
+       generic .nav-links a selector with a more specific one. */
+    .nav-links a.btn { color: var(--paper-light); }
+    .nav-links a.btn:hover { color: var(--paper-light); }
     .btn {
       display: inline-flex; align-items: center; gap: 0.5rem;
       padding: 0.75rem 1.4rem;
@@ -400,12 +404,13 @@
       }
     }
 
-    /* Underline-draws on inline link hovers (FAQ summaries, nav links) */
+    /* Underline-draws on inline link hovers (skip pill buttons — they're
+       already CTAs, no underline needed). */
     @media (prefers-reduced-motion: no-preference) {
-      .nav-links a, .footer-links a, .pricing-cta {
+      .nav-links a:not(.btn), .footer-links a, .pricing-cta {
         position: relative;
       }
-      .nav-links a::after, .footer-links a::after, .pricing-cta::after {
+      .nav-links a:not(.btn)::after, .footer-links a::after, .pricing-cta::after {
         content: "";
         position: absolute;
         left: 0; right: 0; bottom: -2px;
@@ -415,7 +420,7 @@
         transform-origin: right;
         transition: transform 350ms cubic-bezier(.2, .7, .3, 1);
       }
-      .nav-links a:hover::after, .footer-links a:hover::after, .pricing-cta:hover::after {
+      .nav-links a:not(.btn):hover::after, .footer-links a:hover::after, .pricing-cta:hover::after {
         transform: scaleX(1);
         transform-origin: left;
       }
