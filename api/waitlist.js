@@ -59,7 +59,11 @@ export default async function handler(req, res) {
   // 1. Always log — primary persistence.
   console.log(JSON.stringify({ event: "waitlist_signup", ts, email, source, ip, ua }));
 
-  // 2. Fan-out to Resend if configured.
+  // We MUST await all email work before responding. Vercel serverless
+  // terminates background promises once the response is sent.
+  const tasks = [];
+
+  // 2. Resend fan-out (owner notification + welcome auto-responder).
   const resendKey = process.env.RESEND_API_KEY;
   if (resendKey) {
     const headers = {
@@ -67,63 +71,86 @@ export default async function handler(req, res) {
       "Content-Type": "application/json",
     };
 
-    // 2a. Notify owner — sent in parallel with welcome email.
-    const ownerEmail = fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        from: RESEND_FROM,
-        to: [OWNER_EMAIL],
-        subject: `New PetTranslator.ai waitlist signup — ${email}`,
-        text:
-          `New signup\n\n` +
-          `Email:     ${email}\n` +
-          `Source:    ${source}\n` +
-          `Timestamp: ${ts}\n` +
-          `IP:        ${ip}\n` +
-          `UA:        ${ua}`,
-      }),
-    }).catch((err) => console.error("resend_owner_failed", err?.message));
+    // 2a. Owner notification
+    tasks.push(
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          from: RESEND_FROM,
+          to: [OWNER_EMAIL],
+          subject: `New PetTranslator.ai waitlist signup — ${email}`,
+          text:
+            `New signup\n\n` +
+            `Email:     ${email}\n` +
+            `Source:    ${source}\n` +
+            `Timestamp: ${ts}\n` +
+            `IP:        ${ip}\n` +
+            `UA:        ${ua}`,
+        }),
+      })
+        .then(async (r) => {
+          if (!r.ok) {
+            const body = await r.text().catch(() => "");
+            console.error("resend_owner_status", r.status, body.slice(0, 300));
+          } else {
+            console.log("resend_owner_ok");
+          }
+        })
+        .catch((err) => console.error("resend_owner_threw", err?.message))
+    );
 
     // 2b. Welcome auto-responder. Reply-to is the owner so the recipient
     //     can write back and reach a real human inbox.
-    const welcomeEmail = fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        from: RESEND_FROM,
-        to: [email],
-        reply_to: OWNER_EMAIL,
-        subject: "You're in — here's what's coming",
-        text: welcomeText(),
-        html: welcomeHtml(),
-      }),
-    }).catch((err) => console.error("resend_welcome_failed", err?.message));
-
-    // Don't block the response on email delivery — fire and forget.
-    Promise.allSettled([ownerEmail, welcomeEmail]).then((results) => {
-      results.forEach((r, i) => {
-        if (r.status === "rejected") console.error("resend_settled_failed", i, r.reason?.message);
-      });
-    });
+    tasks.push(
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          from: RESEND_FROM,
+          to: [email],
+          reply_to: OWNER_EMAIL,
+          subject: "You're in — here's what's coming",
+          text: welcomeText(),
+          html: welcomeHtml(),
+        }),
+      })
+        .then(async (r) => {
+          if (!r.ok) {
+            const body = await r.text().catch(() => "");
+            console.error("resend_welcome_status", r.status, body.slice(0, 300));
+          } else {
+            console.log("resend_welcome_ok");
+          }
+        })
+        .catch((err) => console.error("resend_welcome_threw", err?.message))
+    );
+  } else {
+    console.log("resend_skipped_no_key");
   }
 
-  // 3. Optional Web3Forms fan-out (kept as a backup channel).
+  // 3. Web3Forms backup channel (only if configured).
   const w3fKey = process.env.WEB3FORMS_KEY;
   if (w3fKey) {
-    fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        access_key: w3fKey,
-        subject: `PetTranslator.ai waitlist signup (${source})`,
-        from_name: "PetTranslator.ai",
-        email,
-        source,
-        ts,
-      }),
-    }).catch((err) => console.error("web3forms_failed", err?.message));
+    tasks.push(
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: w3fKey,
+          subject: `PetTranslator.ai waitlist signup (${source})`,
+          from_name: "PetTranslator.ai",
+          email,
+          source,
+          ts,
+        }),
+      }).catch((err) => console.error("web3forms_failed", err?.message))
+    );
   }
+
+  // Await everything before responding. Adds ~300–500ms latency but
+  // guarantees that the email work actually runs to completion.
+  await Promise.allSettled(tasks);
 
   res.writeHead(200, { "Content-Type": "application/json", ...CORS_HEADERS })
      .end(JSON.stringify({ ok: true }));
