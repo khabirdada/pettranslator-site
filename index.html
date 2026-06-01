@@ -26,18 +26,20 @@
   <style>
     /* ---------- DESIGN TOKENS ---------- */
     :root {
-      --paper: #f5efe2;
-      --paper-deep: #ece4d2;
-      --paper-light: #fbf6ea;
-      --ink: #1a1814;
-      --ink-soft: #4d463e;
-      --ink-faded: #7d7468;
-      --moss: #2c3a2d;
-      --moss-bright: #4f6b4f;
-      --rust: #8c4324;
-      --rust-soft: #c08566;
-      --rule: #d5c9b1;
-      --rule-soft: #e2d8c2;
+      /* Brand palette — Alabaster, Charcoal, Terracotta, Slate */
+      --paper:        #F5F3E9;  /* Alabaster / Milk — background */
+      --ink:          #1A1A1A;  /* Deep Charcoal — primary text */
+      --terra:        #C46A45;  /* Terracotta — accent / CTA */
+      --slate:        #606060;  /* Slate Gray — muted text */
+
+      /* Derived tones (tied to the four base hues above) */
+      --paper-deep:   #EBE7D6;  /* slightly darker alabaster for alt sections */
+      --paper-light:  #FBFAF2;  /* lifted alabaster for cards */
+      --slate-soft:   #8A8A8A;  /* lighter slate for very faded text */
+      --terra-soft:   #D88460;  /* lighter terracotta for hover */
+      --terra-light:  #E3A684;  /* pale terracotta for dark-bg accents */
+      --rule:         #D8D2BF;  /* warm rule line */
+      --rule-soft:    #E8E2CD;  /* lighter rule */
 
       --font-serif: "Fraunces", "Times New Roman", Georgia, serif;
       --font-sans: "General Sans", -apple-system, system-ui, sans-serif;
@@ -110,13 +112,13 @@
       font-weight: 500;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--ink-faded);
+      color: var(--slate-soft);
     }
     .label {
       font-family: var(--font-mono);
       font-size: 0.72rem;
       letter-spacing: 0.06em;
-      color: var(--ink-faded);
+      color: var(--slate-soft);
       text-transform: uppercase;
     }
 
@@ -132,7 +134,7 @@
       font-size: 0.68rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--ink-soft);
+      color: var(--slate);
       background: var(--paper);
     }
     .masthead-inner { display: flex; justify-content: space-between; gap: 1rem; }
@@ -166,13 +168,13 @@
       min-height: 44px;
       padding: 0.4rem 0;
     }
-    .brand em { color: var(--moss); font-variation-settings: "SOFT" 100; }
+    .brand em { color: var(--terra); font-variation-settings: "SOFT" 100; }
     .nav-links { display: none; gap: 2rem; }
     @media (min-width: 820px) {
       .nav-links { display: flex; align-items: center; }
     }
     .nav-links a {
-      font-size: 0.86rem; text-decoration: none; color: var(--ink-soft);
+      font-size: 0.86rem; text-decoration: none; color: var(--slate);
       transition: color 200ms;
     }
     .nav-links a:hover { color: var(--ink); }
@@ -187,7 +189,7 @@
       cursor: pointer;
       transition: transform 200ms cubic-bezier(.2,.7,.3,1), background 200ms;
     }
-    .btn:hover { background: var(--moss); transform: translateY(-1px); }
+    .btn:hover { background: var(--terra); transform: translateY(-1px); }
     .btn-light {
       background: var(--paper-light); color: var(--ink);
       border: 1px solid var(--ink);
@@ -224,7 +226,7 @@
       font-variation-settings: "opsz" 144, "SOFT" 30;
     }
     .hero h1 em {
-      color: var(--moss);
+      color: var(--terra);
       font-variation-settings: "opsz" 144, "SOFT" 100;
       display: inline-block;
     }
@@ -233,7 +235,7 @@
     }
     .hero h1 .underline-art::after {
       content: ""; position: absolute; left: 0; right: 0; bottom: 0.08em;
-      height: 0.06em; background: var(--rust);
+      height: 0.06em; background: var(--terra);
       transform-origin: left;
       animation: draw 1.4s cubic-bezier(.2,.7,.3,1) forwards;
       animation-delay: 800ms;
@@ -245,7 +247,7 @@
       font-size: 0.72rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--ink-faded);
+      color: var(--slate-soft);
       border-left: 1px solid var(--rule);
       padding-left: 1rem;
       line-height: 1.8;
@@ -262,9 +264,9 @@
       font-variation-settings: "opsz" 14, "SOFT" 60;
       font-size: clamp(1.1rem, 1.5vw, 1.45rem);
       line-height: 1.4;
-      color: var(--ink-soft);
+      color: var(--slate);
     }
-    .hero-lede em { color: var(--moss); }
+    .hero-lede em { color: var(--terra); }
 
     /* Hero form */
     .waitlist {
@@ -294,7 +296,7 @@
       color: var(--ink);
       min-height: 44px;
     }
-    .waitlist input[type="email"]::placeholder { color: var(--ink-faded); }
+    .waitlist input[type="email"]::placeholder { color: var(--slate-soft); }
     .waitlist button {
       width: 100%;
     }
@@ -302,19 +304,19 @@
     .waitlist-note {
       margin-top: 0.85rem;
       font-size: 0.82rem;
-      color: var(--ink-soft);
+      color: var(--slate);
       max-width: 38ch;
     }
     .waitlist-note b { color: var(--ink); font-weight: 600; }
     .waitlist-success {
       padding: 1.5rem;
-      border: 1px solid var(--moss);
+      border: 1px solid var(--terra);
       border-radius: 16px;
-      background: color-mix(in srgb, var(--moss) 6%, var(--paper-light));
+      background: color-mix(in srgb, var(--terra) 6%, var(--paper-light));
       text-align: left;
     }
-    .waitlist-success strong { display: block; font-family: var(--font-serif); font-size: 1.25rem; color: var(--moss); margin-bottom: 0.25rem; }
-    .waitlist-success span { color: var(--ink-soft); font-size: 0.9rem; }
+    .waitlist-success strong { display: block; font-family: var(--font-serif); font-size: 1.25rem; color: var(--terra); margin-bottom: 0.25rem; }
+    .waitlist-success span { color: var(--slate); font-size: 0.9rem; }
 
     /* ---------- MANIFESTO ---------- */
     .manifesto {
@@ -331,7 +333,7 @@
       color: var(--ink);
       max-width: 760px;
     }
-    .manifesto-text em { color: var(--moss); }
+    .manifesto-text em { color: var(--terra); }
     .dropcap {
       float: left;
       font-family: var(--font-serif);
@@ -340,7 +342,7 @@
       padding-right: 0.6rem;
       padding-top: 0.32rem;
       font-variation-settings: "SOFT" 0;
-      color: var(--moss);
+      color: var(--terra);
     }
     .manifesto-sig {
       margin-top: 2rem;
@@ -348,13 +350,13 @@
       font-size: 0.72rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--ink-faded);
+      color: var(--slate-soft);
     }
 
     /* ---------- PRINCIPLES ---------- */
     .principles { padding: clamp(3rem, 7vw, 6rem) 0; }
     .principles-head { margin-bottom: clamp(2rem, 4vw, 3.5rem); }
-    .principles-head h2 em { color: var(--moss); }
+    .principles-head h2 em { color: var(--terra); }
     .principles-list { display: grid; gap: clamp(2rem, 4vw, 3.5rem); }
     .principle {
       display: grid;
@@ -373,14 +375,14 @@
       font-family: var(--font-serif);
       font-style: italic;
       font-size: clamp(2.5rem, 4vw, 3.5rem);
-      color: var(--moss);
+      color: var(--terra);
       line-height: 1;
       font-variation-settings: "SOFT" 100;
     }
     .principle h3 {
       font-variation-settings: "opsz" 30, "SOFT" 30;
     }
-    .principle p { color: var(--ink-soft); margin: 0.5rem 0 0; max-width: 38ch; }
+    .principle p { color: var(--slate); margin: 0.5rem 0 0; max-width: 38ch; }
 
     /* ---------- SAMPLE ANALYSIS ---------- */
     .sample {
@@ -393,8 +395,8 @@
     .sample::before {
       /* override paper grain for the dark section */
     }
-    .sample .label, .sample .eyebrow { color: var(--rust-soft); }
-    .sample h2 em { color: var(--rust-soft); }
+    .sample .label, .sample .eyebrow { color: var(--terra-light); }
+    .sample h2 em { color: var(--terra-light); }
     .sample h2 {
       color: var(--paper);
       font-variation-settings: "opsz" 80, "SOFT" 40;
@@ -423,7 +425,7 @@
       line-height: 1.1;
       font-variation-settings: "opsz" 50, "SOFT" 60;
     }
-    .sample-state em { color: var(--rust-soft); font-style: italic; }
+    .sample-state em { color: var(--terra-light); font-style: italic; }
     .sample-subject {
       font-family: var(--font-mono);
       font-size: 0.72rem;
@@ -441,7 +443,7 @@
     .conf-dial {
       width: 50px; height: 50px;
       border-radius: 50%;
-      background: conic-gradient(var(--rust-soft) 0%, var(--rust-soft) 92%, color-mix(in srgb, var(--paper) 20%, transparent) 92%, color-mix(in srgb, var(--paper) 20%, transparent) 100%);
+      background: conic-gradient(var(--terra-light) 0%, var(--terra-light) 92%, color-mix(in srgb, var(--paper) 20%, transparent) 92%, color-mix(in srgb, var(--paper) 20%, transparent) 100%);
       display: grid; place-items: center;
       position: relative;
     }
@@ -462,7 +464,7 @@
     .quote-label, .markers-label {
       font-family: var(--font-mono); font-size: 0.7rem;
       letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--rust-soft); margin-bottom: 1rem;
+      color: var(--terra-light); margin-bottom: 1rem;
     }
     .sample-quote {
       font-family: var(--font-serif);
@@ -475,8 +477,8 @@
     }
     .sample-advisory {
       padding: 1.25rem 1.4rem;
-      border-left: 2px solid var(--rust-soft);
-      background: color-mix(in srgb, var(--rust) 12%, transparent);
+      border-left: 2px solid var(--terra-light);
+      background: color-mix(in srgb, var(--terra) 12%, transparent);
       font-size: 0.92rem;
       color: color-mix(in srgb, var(--paper) 85%, transparent);
       line-height: 1.55;
@@ -487,7 +489,7 @@
       font-size: 0.68rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--rust-soft);
+      color: var(--terra-light);
       margin-bottom: 0.4rem;
       font-weight: 500;
     }
@@ -523,7 +525,7 @@
     }
     .marker-num {
       counter-increment: m;
-      color: var(--rust-soft);
+      color: var(--terra-light);
       letter-spacing: 0.05em;
     }
     .marker-num::before { content: counter(m, decimal-leading-zero); }
@@ -532,7 +534,7 @@
 
     /* ---------- HOW IT WORKS ---------- */
     .how { padding: clamp(3rem, 7vw, 6rem) 0; }
-    .how h2 em { color: var(--moss); }
+    .how h2 em { color: var(--terra); }
     .chapters { margin-top: clamp(2rem, 4vw, 3rem); display: grid; gap: 0.5rem; }
     @media (min-width: 820px) {
       .chapters { grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
@@ -548,7 +550,7 @@
       font-family: var(--font-mono);
       font-size: 0.7rem;
       letter-spacing: 0.14em;
-      color: var(--ink-faded);
+      color: var(--slate-soft);
       text-transform: uppercase;
       margin-bottom: 1rem;
     }
@@ -556,8 +558,8 @@
       margin-bottom: 0.75rem;
       font-variation-settings: "opsz" 30, "SOFT" 40;
     }
-    .chapter h3 em { color: var(--moss); }
-    .chapter p { color: var(--ink-soft); margin: 0; }
+    .chapter h3 em { color: var(--terra); }
+    .chapter p { color: var(--slate); margin: 0; }
 
     /* ---------- PRICING ---------- */
     .pricing {
@@ -565,7 +567,7 @@
       border-top: 1px solid var(--rule);
       background: var(--paper-deep);
     }
-    .pricing h2 em { color: var(--moss); }
+    .pricing h2 em { color: var(--terra); }
     .pricing-table {
       margin-top: clamp(2rem, 4vw, 3rem);
       border-top: 2px solid var(--ink);
@@ -586,7 +588,7 @@
       padding-left: clamp(1rem, 2vw, 1.5rem);
       padding-right: clamp(1rem, 2vw, 1.5rem);
       border-bottom: 1px solid var(--rule);
-      border-left: 3px solid var(--moss);
+      border-left: 3px solid var(--terra);
     }
     .pricing-tier {
       font-family: var(--font-serif);
@@ -595,30 +597,30 @@
       letter-spacing: -0.02em;
       line-height: 1;
     }
-    .pricing-tier em { color: var(--moss); }
+    .pricing-tier em { color: var(--terra); }
     .pricing-price {
       font-family: var(--font-mono);
       font-size: 1rem;
       color: var(--ink);
       letter-spacing: 0.02em;
     }
-    .pricing-price small { color: var(--ink-faded); font-size: 0.85em; }
+    .pricing-price small { color: var(--slate-soft); font-size: 0.85em; }
     .pricing-feats {
       list-style: none; padding: 0; margin: 0;
-      font-size: 0.92rem; color: var(--ink-soft);
+      font-size: 0.92rem; color: var(--slate);
     }
     .pricing-feats li { padding: 0.15rem 0; }
-    .pricing-cta { font-size: 0.85rem; color: var(--moss); font-weight: 500; }
+    .pricing-cta { font-size: 0.85rem; color: var(--terra); font-weight: 500; }
     .pricing-note {
       margin-top: 2rem;
       font-size: 0.85rem;
-      color: var(--ink-soft);
+      color: var(--slate);
       text-align: center;
     }
 
     /* ---------- FAQ ---------- */
     .faq { padding: clamp(3rem, 7vw, 6rem) 0; }
-    .faq h2 em { color: var(--moss); }
+    .faq h2 em { color: var(--terra); }
     .faq-list { margin-top: clamp(2rem, 4vw, 3rem); border-top: 2px solid var(--ink); }
     details.q {
       border-bottom: 1px solid var(--rule);
@@ -640,10 +642,10 @@
       font-weight: 400;
       flex-shrink: 0;
       transition: transform 300ms cubic-bezier(.2,.7,.3,1);
-      color: var(--moss);
+      color: var(--terra);
     }
     details.q[open] summary::after { transform: rotate(45deg); }
-    details.q p { color: var(--ink-soft); margin: 1rem 0 0; max-width: 70ch; line-height: 1.65; }
+    details.q p { color: var(--slate); margin: 1rem 0 0; max-width: 70ch; line-height: 1.65; }
 
     /* ---------- FINAL CTA ---------- */
     .closing {
@@ -658,14 +660,14 @@
       font-size: clamp(2.5rem, 7vw, 5.5rem);
       letter-spacing: -0.03em;
     }
-    .closing h2 em { color: var(--rust-soft); }
+    .closing h2 em { color: var(--terra-light); }
     .closing .hero-lede { color: color-mix(in srgb, var(--paper) 70%, transparent); margin: 1.5rem auto 0; }
     .closing .waitlist { margin: clamp(2rem, 4vw, 3rem) auto 0; }
     .closing .waitlist-row { border-color: color-mix(in srgb, var(--paper) 60%, transparent); background: color-mix(in srgb, var(--paper) 5%, transparent); }
     .closing .waitlist input[type="email"] { color: var(--paper); }
     .closing .waitlist input[type="email"]::placeholder { color: color-mix(in srgb, var(--paper) 50%, transparent); }
     .closing .btn { background: var(--paper-light); color: var(--ink); }
-    .closing .btn:hover { background: var(--rust-soft); color: var(--ink); }
+    .closing .btn:hover { background: var(--terra-light); color: var(--ink); }
     .closing .waitlist-note { color: color-mix(in srgb, var(--paper) 60%, transparent); margin: 1.5rem auto 0; }
 
     /* ---------- FOOTER ---------- */
@@ -685,7 +687,7 @@
       font-size: 1.15rem;
       font-variation-settings: "SOFT" 0;
     }
-    .footer-brand em { color: var(--rust-soft); font-variation-settings: "SOFT" 100; }
+    .footer-brand em { color: var(--terra-light); font-variation-settings: "SOFT" 100; }
     .footer-tag { margin-top: 0.5rem; color: color-mix(in srgb, var(--paper) 55%, transparent); }
     .footer-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin: -0.5rem; }
     .footer-links a {
@@ -697,7 +699,7 @@
       display: inline-flex;
       align-items: center;
     }
-    .footer-links a:hover { color: var(--rust-soft); }
+    .footer-links a:hover { color: var(--terra-light); }
     .legal {
       margin-top: 2rem;
       padding-top: 1.5rem;
@@ -1000,7 +1002,7 @@
   <!-- ============ FINAL CTA ============ -->
   <section class="closing" id="waitlist-end">
     <div class="container narrower">
-      <p class="label" style="color: var(--rust-soft); margin-bottom: 1.5rem;">§ 07 · The list</p>
+      <p class="label" style="color: var(--terra-light); margin-bottom: 1.5rem;">§ 07 · The list</p>
       <h2>Be first <em>in line.</em></h2>
       <p class="hero-lede">
         Join the waitlist and get three months of Pro free at launch — limited to the first 500 signups.
