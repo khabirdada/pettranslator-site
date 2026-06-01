@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PetTranslator.ai — Veterinary-grade AI that decodes what your pet is telling you</title>
+  <meta name="description" content="Upload a 10-second video. Our AI analyzes your pet's body language, vocalization, and context the way a certified animal behaviorist would — and gives you a plain-English translation in under 30 seconds." />
+
+  <!-- Open Graph / social share -->
+  <meta property="og:title" content="PetTranslator.ai — Know what your pet is actually telling you" />
+  <meta property="og:description" content="Veterinary-grade multimodal AI analyzes your pet's video, body language, and sounds to reveal their emotional state in seconds." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pettranslator.ai" />
+  <meta property="og:image" content="https://pettranslator.ai/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Favicon (replace with real one before launch) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐾</text></svg>" />
+
+  <!-- Tailwind via CDN — zero build step -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-text {
+      background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+
+  <!-- Cloudflare Web Analytics — replace TOKEN once deployed (free, no cookie banner needed) -->
+  <!-- <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_TOKEN"}'></script> -->
+</head>
+
+<body class="bg-white text-slate-900 antialiased selection:bg-indigo-100">
+
+  <!-- ============ NAV ============ -->
+  <nav class="border-b border-slate-100 bg-white/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="text-base font-bold tracking-tight">
+        pettranslator<span class="text-indigo-600 font-semibold">.ai</span>
+      </a>
+      <div class="flex items-center space-x-2 sm:space-x-6 text-sm font-medium text-slate-600">
+        <a href="#how-it-works" class="hidden sm:inline hover:text-slate-900 transition">How it works</a>
+        <a href="#sample" class="hidden sm:inline hover:text-slate-900 transition">Sample</a>
+        <a href="#pricing" class="hidden sm:inline hover:text-slate-900 transition">Pricing</a>
+        <a href="#waitlist" class="bg-slate-900 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-slate-800 transition">
+          Join waitlist
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="max-w-6xl mx-auto px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="inline-flex items-center space-x-2 bg-indigo-50 text-indigo-700 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-8">
+        <span class="w-1.5 h-1.5 bg-indigo-600 rounded-full animate-pulse"></span>
+        <span>Launching soon · Early access open</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1]">
+        Know what your pet is
+        <span class="gradient-text">actually</span>
+        telling you.
+      </h1>
+
+      <p class="mt-6 text-lg sm:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
+        Upload a 10-second video. Our AI analyzes body language, vocalization, and context the way a certified animal behaviorist would — and gives you a plain-English translation in under 30 seconds.
+      </p>
+
+      <!-- ============ WAITLIST FORM (HERO) ============ -->
+      <form
+        id="waitlist-form-hero"
+        action="https://formsubmit.co/ajax/khabir.neelum@gmail.com"
+        method="POST"
+        class="mt-10 max-w-md mx-auto"
+      >
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="your@email.com"
+            class="flex-1 px-5 py-3.5 rounded-full border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          />
+          <input type="hidden" name="source" value="hero" />
+          <input type="hidden" name="_subject" value="New PetTranslator.ai waitlist signup (hero)" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <button
+            type="submit"
+            class="bg-slate-900 text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-slate-800 transition whitespace-nowrap shadow-sm"
+          >
+            Get early access →
+          </button>
+        </div>
+        <p class="mt-4 text-xs text-slate-500">
+          First 500 signups get <strong class="text-slate-900">3 months of Pro free</strong> at launch. No credit card required.
+        </p>
+      </form>
+    </div>
+
+    <!-- Trust strip -->
+    <div class="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-y-6 text-center max-w-4xl mx-auto">
+      <div>
+        <div class="text-2xl font-bold text-slate-900">Multimodal AI</div>
+        <div class="text-xs text-slate-500 mt-1">Video + audio + context</div>
+      </div>
+      <div>
+        <div class="text-2xl font-bold text-slate-900">Behaviorist-grade</div>
+        <div class="text-xs text-slate-500 mt-1">Methodology, not gimmick</div>
+      </div>
+      <div>
+        <div class="text-2xl font-bold text-slate-900">Privacy-first</div>
+        <div class="text-xs text-slate-500 mt-1">Never used for AI training</div>
+      </div>
+      <div>
+        <div class="text-2xl font-bold text-slate-900">30 seconds</div>
+        <div class="text-xs text-slate-500 mt-1">Upload to insight</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROBLEM / DIFFERENTIATION ============ -->
+  <section class="bg-slate-50 border-y border-slate-100 py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">
+          Most pet translator apps are toys.<br />This isn't one.
+        </h2>
+        <p class="mt-4 text-slate-600 text-lg max-w-2xl mx-auto">
+          Cartoon translations charging weekly subscriptions aren't a category we're trying to win. We built something different.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-6">
+        <!-- Bad -->
+        <div class="bg-white rounded-2xl p-8 border border-slate-200">
+          <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">Typical bark translator app</div>
+          <ul class="space-y-3 text-sm text-slate-600">
+            <li class="flex items-start"><span class="text-slate-400 mr-3 mt-0.5">×</span><span>Audio-only soundboard</span></li>
+            <li class="flex items-start"><span class="text-slate-400 mr-3 mt-0.5">×</span><span>Cartoon outputs ("I want a treat!")</span></li>
+            <li class="flex items-start"><span class="text-slate-400 mr-3 mt-0.5">×</span><span>Weekly trial → surprise $9.99 charge</span></li>
+            <li class="flex items-start"><span class="text-slate-400 mr-3 mt-0.5">×</span><span>Built by app studios</span></li>
+          </ul>
+        </div>
+        <!-- Good -->
+        <div class="bg-slate-900 text-white rounded-2xl p-8 border border-slate-900 relative">
+          <div class="absolute -top-3 left-8 bg-indigo-600 text-white text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full">PetTranslator.ai</div>
+          <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">What we built</div>
+          <ul class="space-y-3 text-sm text-slate-200">
+            <li class="flex items-start"><span class="text-indigo-400 mr-3 mt-0.5">✓</span><span>Multimodal: video + audio + behavioral context</span></li>
+            <li class="flex items-start"><span class="text-indigo-400 mr-3 mt-0.5">✓</span><span>Clinical behavioral analysis in plain English</span></li>
+            <li class="flex items-start"><span class="text-indigo-400 mr-3 mt-0.5">✓</span><span>$4.99/month, cancel in one click</span></li>
+            <li class="flex items-start"><span class="text-indigo-400 mr-3 mt-0.5">✓</span><span>Grounded in veterinary behavioral science</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how-it-works" class="py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Three steps. About thirty seconds.</h2>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 font-bold">1</div>
+          <h3 class="font-semibold text-slate-900 mb-2">Upload</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">Record a short clip on your phone or upload from camera roll. Up to 30 seconds. Dog, cat, or both.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 font-bold">2</div>
+          <h3 class="font-semibold text-slate-900 mb-2">Add context</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">A single sentence about what's happening. <em>"Whining near the front door"</em> means something very different from <em>"whining at an empty food bowl."</em></p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 font-bold">3</div>
+          <h3 class="font-semibold text-slate-900 mb-2">Read the report</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">Observed biometric markers, primary emotional state, AI confidence score, and an Owner Action Plan you can actually use today.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SAMPLE ANALYSIS ============ -->
+  <section id="sample" class="bg-slate-50 border-y border-slate-100 py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">This is what a real analysis looks like.</h2>
+        <p class="mt-4 text-slate-600 text-lg max-w-2xl mx-auto">
+          No "Woof! Feed me!" cartoon translations. Real behavioral signals, mapped to real recommendations.
+        </p>
+      </div>
+
+      <!-- Sample report card -->
+      <div class="max-w-5xl mx-auto bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-100 pb-6 mb-8">
+          <div>
+            <span class="text-xs font-semibold text-indigo-600 tracking-wider uppercase">Sample Report</span>
+            <h3 class="text-2xl font-bold tracking-tight text-slate-900 mt-1">Acute Environmental Stress</h3>
+            <p class="text-sm text-slate-500 mt-1">Subject: Canine · Mixed Breed</p>
+          </div>
+          <div class="mt-4 md:mt-0 flex items-center space-x-3 bg-slate-50 border border-slate-200 rounded-2xl p-3">
+            <div class="relative w-12 h-12 rounded-full border-4 border-indigo-600 flex items-center justify-center">
+              <span class="text-xs font-bold text-slate-900">92%</span>
+            </div>
+            <div>
+              <div class="text-xs font-semibold text-slate-900">AI Confidence</div>
+              <div class="text-xs text-slate-500">High signal-to-noise</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-6 items-start">
+          <!-- Left: Translation + Action -->
+          <div class="lg:col-span-7 space-y-5">
+            <div>
+              <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Decoded Intent</h4>
+              <blockquote class="text-lg font-medium text-slate-900 leading-relaxed italic">
+                "I'm feeling highly uncertain and overwhelmed by what's happening in front of me. I want to look away to avoid conflict, but I'm keeping my body tense in case I need to move. I'm trying to calm myself down by yawning and licking my lips — I need you to give me some space."
+              </blockquote>
+            </div>
+
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6">
+              <div class="flex items-start space-x-3">
+                <svg class="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <div>
+                  <h5 class="text-xs font-semibold text-amber-900 uppercase tracking-wider">Owner Action Plan</h5>
+                  <p class="text-sm text-amber-900 leading-relaxed mt-2">
+                    Your dog is exhibiting classic 'displacement signals' — they're approaching their emotional threshold. Avoid direct eye contact or bending over them. Back away slightly, give them a quiet exit route, and don't force interaction with whatever object or person is currently near them.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Biometric markers -->
+          <div class="lg:col-span-5">
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+              <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-3 mb-4">Observed Biometric Cues</h4>
+              <ul class="space-y-3">
+                <li class="flex items-start space-x-2.5 text-sm">
+                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
+                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Lip-licking</strong> absent of food proximity</span>
+                </li>
+                <li class="flex items-start space-x-2.5 text-sm">
+                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
+                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Yawning</strong> as physiological displacement</span>
+                </li>
+                <li class="flex items-start space-x-2.5 text-sm">
+                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
+                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Whale-eye</strong> with sclera visible</span>
+                </li>
+                <li class="flex items-start space-x-2.5 text-sm">
+                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
+                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Tense jaw</strong> with tight commissures</span>
+                </li>
+                <li class="flex items-start space-x-2.5 text-sm">
+                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
+                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Low-amplitude wag</strong> below spine line</span>
+                </li>
+                <li class="flex items-start space-x-2.5 text-sm">
+                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 flex-shrink-0"></span>
+                  <span class="text-slate-700"><strong class="text-slate-900 font-medium">Weight shifted backward</strong> away from stimulus</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHAT YOU GET ============ -->
+  <section class="py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Built for owners who take their pets seriously.</h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div>
+          <div class="text-indigo-600 mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg></div>
+          <h3 class="font-semibold text-slate-900 mb-1.5">Biometric scan</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">Documents tail carriage, ear position, jaw tension, pupil dilation, posture, vocal pitch — the same markers a behaviorist would look for.</p>
+        </div>
+        <div>
+          <div class="text-indigo-600 mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg></div>
+          <h3 class="font-semibold text-slate-900 mb-1.5">Owner action plan</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">Every analysis ends with what to do next. Not a horoscope — a specific, behavior-backed recommendation.</p>
+        </div>
+        <div>
+          <div class="text-indigo-600 mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+          <h3 class="font-semibold text-slate-900 mb-1.5">Pet history</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">Track mood, stress, and behavioral patterns over time. Spot changes early — before they become problems.</p>
+        </div>
+        <div>
+          <div class="text-indigo-600 mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
+          <h3 class="font-semibold text-slate-900 mb-1.5">Vet-ready PDF</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">Download a clean PDF of any analysis to share with your veterinarian or trainer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRICING ============ -->
+  <section id="pricing" class="bg-slate-50 border-y border-slate-100 py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Simple pricing. Cancel anytime.</h2>
+        <p class="mt-4 text-slate-600 text-lg max-w-2xl mx-auto">
+          Free tier is rate-limited, not feature-limited. The same AI on every plan.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-6">
+        <!-- Free -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-8">
+          <h3 class="font-semibold text-slate-900">Free</h3>
+          <div class="mt-4 mb-6"><span class="text-4xl font-bold">$0</span><span class="text-slate-500 text-sm"> forever</span></div>
+          <ul class="space-y-2.5 text-sm text-slate-600">
+            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>3 analyses per day</span></li>
+            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>Basic behavioral report</span></li>
+            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>1 pet profile</span></li>
+            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>7-day history</span></li>
+          </ul>
+        </div>
+
+        <!-- Premium (highlighted) -->
+        <div class="bg-slate-900 text-white border border-slate-900 rounded-2xl p-8 relative shadow-lg">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full">Recommended</div>
+          <h3 class="font-semibold">Premium</h3>
+          <div class="mt-4 mb-6"><span class="text-4xl font-bold">$4.99</span><span class="text-slate-400 text-sm"> /month</span></div>
+          <ul class="space-y-2.5 text-sm text-slate-200">
+            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Unlimited analyses</span></li>
+            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Full biometric breakdown</span></li>
+            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Up to 5 pet profiles</span></li>
+            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Unlimited history</span></li>
+            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Vet-ready PDF export</span></li>
+            <li class="flex items-start"><span class="text-indigo-400 mr-2 mt-0.5">✓</span><span>Priority processing</span></li>
+          </ul>
+        </div>
+
+        <!-- Annual -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-8">
+          <h3 class="font-semibold text-slate-900">Annual</h3>
+          <div class="mt-4 mb-6">
+            <span class="text-4xl font-bold">$39.99</span><span class="text-slate-500 text-sm"> /year</span>
+            <div class="text-xs text-indigo-600 font-semibold mt-1">Save 33%</div>
+          </div>
+          <ul class="space-y-2.5 text-sm text-slate-600">
+            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>Everything in Premium</span></li>
+            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>Two months free</span></li>
+            <li class="flex items-start"><span class="text-indigo-600 mr-2 mt-0.5">✓</span><span>Locked-in renewal price</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="text-center text-sm text-slate-500 mt-8">
+        Cancel in one click — no email, no phone call. 7-day money-back guarantee on first charge.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="py-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-center mb-12">Common questions</h2>
+
+      <div class="space-y-3">
+        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
+          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
+            Is this actually scientific or is it just AI making things up?
+            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+            We use multimodal AI — it looks at video, listens to audio, and weighs the context you provide. The system is prompted using published animal behavioral science to identify physical markers (tail carriage, ear position, vocal pitch, posture) before generating a translation. Every report includes a confidence score so you know how clear the signals were.
+          </p>
+        </details>
+
+        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
+          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
+            Is this a replacement for a vet?
+            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+            No. PetTranslator.ai is a behavioral analysis tool, not a medical diagnostic. If your pet shows signs of pain, illness, or sudden behavioral change, see a licensed veterinarian. Our PDF export is designed to <em>help</em> that conversation, not replace it.
+          </p>
+        </details>
+
+        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
+          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
+            What pets does it work with?
+            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+            Dogs and cats are fully supported. Other companion animals (rabbits, birds, small mammals) are coming after launch.
+          </p>
+        </details>
+
+        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
+          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
+            How is my pet's video used?
+            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+            Your video is processed by our AI partners (OpenAI / Anthropic) under their enterprise privacy terms and is <strong>not</strong> used for model training. We do not sell, share, or publish your uploads. You can delete any analysis from your account at any time.
+          </p>
+        </details>
+
+        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
+          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
+            When does it launch?
+            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+            We're aiming for public launch in late summer 2026. Early-access signups get a heads up 2 weeks before public, plus 3 months of Pro free for the first 500 to join.
+          </p>
+        </details>
+
+        <details class="group bg-slate-50 border border-slate-200 rounded-xl p-6">
+          <summary class="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
+            Do you have an iOS / Android app?
+            <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+            Not yet. The web app will work on every modern phone and desktop browser at launch. We'll add native apps once we know exactly which features owners use most.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section id="waitlist" class="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-24">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <h2 class="text-3xl sm:text-5xl font-bold tracking-tight">Be first in line.</h2>
+      <p class="mt-5 text-lg text-slate-300 leading-relaxed">
+        Join the waitlist and get 3 months of Pro free at launch — limited to the first 500 signups.
+      </p>
+
+      <form
+        id="waitlist-form-footer"
+        action="https://formsubmit.co/ajax/khabir.neelum@gmail.com"
+        method="POST"
+        class="mt-10"
+      >
+        <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="your@email.com"
+            class="flex-1 px-5 py-3.5 rounded-full text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+          <input type="hidden" name="source" value="footer" />
+          <input type="hidden" name="_subject" value="New PetTranslator.ai waitlist signup (footer)" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <button
+            type="submit"
+            class="bg-white text-slate-900 px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-slate-100 transition whitespace-nowrap shadow-sm"
+          >
+            Get early access →
+          </button>
+        </div>
+        <p class="mt-4 text-xs text-slate-400">No credit card. No spam. Unsubscribe with one click.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="border-t border-slate-100 py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="text-sm text-slate-500">
+          © 2026 PetTranslator.ai · Understand your pet, scientifically.
+        </div>
+        <div class="flex space-x-6 text-sm text-slate-500">
+          <a href="/terms" class="hover:text-slate-900 transition">Terms</a>
+          <a href="/privacy" class="hover:text-slate-900 transition">Privacy</a>
+          <a href="/refund-policy" class="hover:text-slate-900 transition">Refunds</a>
+          <a href="mailto:hello@pettranslator.ai" class="hover:text-slate-900 transition">Contact</a>
+        </div>
+      </div>
+      <p class="mt-8 text-xs text-slate-400 max-w-3xl">
+        PetTranslator.ai provides behavioral analysis for educational and entertainment purposes. It is not a substitute for professional veterinary care, diagnosis, or treatment. If you believe your pet may be ill, injured, or in distress, contact a licensed veterinarian immediately.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============ FORM SUCCESS HANDLER ============ -->
+  <script>
+    // Intercept form submissions, show inline success instead of full-page redirect
+    document.querySelectorAll('form[id^="waitlist-form"]').forEach(form => {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = form.querySelector('button[type="submit"]');
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          });
+
+          if (response.ok) {
+            form.innerHTML = `
+              <div class="text-center py-6">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 mb-3">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <p class="font-semibold text-slate-900">You're on the list.</p>
+                <p class="text-sm text-slate-500 mt-1">We'll email you the moment we launch.</p>
+              </div>
+            `;
+          } else {
+            throw new Error('Submission failed');
+          }
+        } catch (err) {
+          btn.disabled = false;
+          btn.textContent = originalText;
+          alert('Something went wrong. Please try again or email hello@pettranslator.ai');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
