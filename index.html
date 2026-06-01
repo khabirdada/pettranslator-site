@@ -236,6 +236,173 @@
       transform: scaleX(0);
     }
     @keyframes draw { to { transform: scaleX(1); } }
+
+    /* ============================================================ */
+    /*  MOTION LAYER — scroll-driven, brand-appropriate              */
+    /*  All wrapped in prefers-reduced-motion + @supports guards     */
+    /* ============================================================ */
+
+    /* 1) Reading-progress bar — thin terracotta line that fills as you scroll */
+    .read-progress {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--terra);
+      transform-origin: left center;
+      transform: scaleX(0);
+      z-index: 100;
+      pointer-events: none;
+      will-change: transform;
+    }
+    @supports (animation-timeline: scroll()) {
+      @media (prefers-reduced-motion: no-preference) {
+        .read-progress {
+          animation: read-progress linear both;
+          animation-timeline: scroll(root);
+        }
+        @keyframes read-progress {
+          to { transform: scaleX(1); }
+        }
+      }
+    }
+
+    /* 2) Mask reveal on section H2s — slide up from beneath a clip mask */
+    @supports (animation-timeline: view()) {
+      @media (prefers-reduced-motion: no-preference) {
+        section h2 {
+          animation: h2-reveal linear both;
+          animation-timeline: view();
+          animation-range: entry 5% cover 25%;
+          will-change: clip-path, transform, opacity;
+        }
+        @keyframes h2-reveal {
+          from {
+            clip-path: inset(0 0 100% 0);
+            transform: translateY(24px);
+            opacity: 0;
+          }
+          to {
+            clip-path: inset(0);
+            transform: none;
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    /* 3) Variable-font axis animation — Newsreader's opsz tightens as the
+          hero scrolls upward. As the headline exits, optical-size shifts
+          from display (72) to text (14) and the headline subtly slides up. */
+    @supports (animation-timeline: view()) {
+      @media (prefers-reduced-motion: no-preference) {
+        .hero h1 {
+          animation: hero-axis linear both;
+          animation-timeline: view();
+          animation-range: exit 0% exit 100%;
+          will-change: font-variation-settings, transform, opacity;
+        }
+        @keyframes hero-axis {
+          from {
+            font-variation-settings: "opsz" 72;
+            transform: none;
+            opacity: 1;
+          }
+          to {
+            font-variation-settings: "opsz" 14;
+            transform: translateY(-24px);
+            opacity: 0.35;
+          }
+        }
+      }
+    }
+
+    /* 4) Confidence dial — SVG stroke-dasharray fill, driven by view() */
+    .conf-svg { display: block; }
+    .conf-ring-bg {
+      stroke: color-mix(in srgb, var(--paper) 18%, transparent);
+    }
+    .conf-ring-fill {
+      stroke: var(--terra-light);
+      stroke-dasharray: 138.23;            /* 2 * π * 22 (radius) */
+      stroke-dashoffset: 138.23;           /* fully empty */
+      transform: rotate(-90deg);
+      transform-origin: center;
+      will-change: stroke-dashoffset;
+    }
+    @supports (animation-timeline: view()) {
+      @media (prefers-reduced-motion: no-preference) {
+        .conf-ring-fill {
+          animation: ring-fill linear both;
+          animation-timeline: view();
+          animation-range: entry 20% cover 60%;
+        }
+        @keyframes ring-fill {
+          to { stroke-dashoffset: 11.06; }  /* 138.23 × (1 - 0.92) for 92% fill */
+        }
+      }
+    }
+    /* Reduced-motion / no-support fallback: show ring filled to final state */
+    @media (prefers-reduced-motion: reduce) {
+      .conf-ring-fill { stroke-dashoffset: 11.06; }
+    }
+    @supports not (animation-timeline: view()) {
+      .conf-ring-fill { stroke-dashoffset: 11.06; }
+    }
+
+    /* 5) Magnetic CTA — JS hook applies transform; CSS gives it spring return */
+    .btn-magnetic {
+      transition: transform 350ms cubic-bezier(.2, .9, .3, 1.2), background 200ms;
+    }
+    @media (prefers-reduced-motion: reduce), (hover: none) {
+      .btn-magnetic { transition: background 200ms; }
+    }
+
+    /* 6) Blueprint dot grid behind principles section — Vercel-tier subtle depth */
+    .principles { position: relative; }
+    .principles::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(
+        circle at 1px 1px,
+        color-mix(in srgb, var(--ink) 14%, transparent) 1px,
+        transparent 1.5px
+      );
+      background-size: 28px 28px;
+      -webkit-mask-image: radial-gradient(ellipse 70% 70% at center, black 30%, transparent 90%);
+              mask-image: radial-gradient(ellipse 70% 70% at center, black 30%, transparent 90%);
+      z-index: 0;
+      opacity: 0.7;
+    }
+    .principles > .container { position: relative; z-index: 1; }
+
+    /* Refinement: marker cascade uses a touch of overshoot for organic feel */
+    @media (prefers-reduced-motion: no-preference) {
+      .markers-list.in-view .marker {
+        animation-timing-function: cubic-bezier(.34, 1.18, .64, 1);
+      }
+    }
+
+    /* Underline-draws on inline link hovers (FAQ summaries, nav links) */
+    @media (prefers-reduced-motion: no-preference) {
+      .nav-links a, .footer-links a, .pricing-cta {
+        position: relative;
+      }
+      .nav-links a::after, .footer-links a::after, .pricing-cta::after {
+        content: "";
+        position: absolute;
+        left: 0; right: 0; bottom: -2px;
+        height: 1px;
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 350ms cubic-bezier(.2, .7, .3, 1);
+      }
+      .nav-links a:hover::after, .footer-links a:hover::after, .pricing-cta:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+    }
     .hero-meta {
       font-family: var(--font-mono);
       font-size: 0.72rem;
@@ -436,17 +603,16 @@
     }
     .conf-dial {
       width: 50px; height: 50px;
-      border-radius: 50%;
-      background: conic-gradient(var(--terra-light) 0%, var(--terra-light) 92%, color-mix(in srgb, var(--paper) 20%, transparent) 92%, color-mix(in srgb, var(--paper) 20%, transparent) 100%);
-      display: grid; place-items: center;
       position: relative;
+      display: grid; place-items: center;
     }
-    .conf-dial::after {
-      content: ""; position: absolute; inset: 5px; border-radius: 50%; background: color-mix(in srgb, var(--paper) 5%, var(--ink));
+    .conf-svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
     }
     .conf-num {
       position: relative; z-index: 1;
-      font-family: var(--font-mono); font-size: 0.85rem; font-weight: 500;
+      font-family: var(--font-mono); font-size: 0.78rem; font-weight: 500;
       color: var(--paper);
     }
     .sample-grid {
@@ -707,6 +873,9 @@
 </head>
 
 <body>
+  <!-- Reading-progress bar: thin terracotta line scaling with scroll -->
+  <div class="read-progress" aria-hidden="true"></div>
+
   <!-- ============ MASTHEAD (editorial signal) ============ -->
   <header class="masthead">
     <div class="container masthead-inner">
@@ -762,7 +931,7 @@
                 aria-label="Email address"
               />
               <input type="hidden" name="source" value="hero" />
-              <button type="submit" class="btn">Get early access →</button>
+              <button type="submit" class="btn btn-magnetic">Get early access →</button>
             </div>
             <p class="waitlist-note">First <b>500 signups</b> get three months of Pro on us. No credit card.</p>
           </form>
@@ -836,7 +1005,13 @@
             <p class="sample-subject">Mixed breed · 23s indoor clip · evening lighting</p>
           </div>
           <div class="sample-conf">
-            <div class="conf-dial"><span class="conf-num" id="confnum">92%</span></div>
+            <div class="conf-dial">
+              <svg class="conf-svg" viewBox="0 0 50 50" width="50" height="50" aria-hidden="true">
+                <circle class="conf-ring-bg" cx="25" cy="25" r="22" fill="none" stroke-width="3" />
+                <circle class="conf-ring-fill" cx="25" cy="25" r="22" fill="none" stroke-width="3" stroke-linecap="round" />
+              </svg>
+              <span class="conf-num" id="confnum">92%</span>
+            </div>
             <div>
               <div class="label" style="margin-bottom: 0.15rem;">AI Confidence</div>
               <div style="font-size: 0.8rem; color: color-mix(in srgb, var(--paper) 65%, transparent);">High signal-to-noise</div>
@@ -1059,22 +1234,28 @@
       observer.observe(markers);
     })();
 
-    // Count-up confidence number
+    // Count-up confidence number (paired with SVG stroke fill in CSS)
     (function () {
       const el = document.getElementById("confnum");
       if (!el) return;
       const target = 92;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        el.textContent = target + "%";
+        return;
+      }
       let started = false;
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting && !started) {
             started = true;
-            let n = 0;
-            const step = () => {
-              n += 4;
-              if (n >= target) { el.textContent = target + "%"; return; }
-              el.textContent = n + "%";
-              requestAnimationFrame(step);
+            const duration = 1400;
+            const t0 = performance.now();
+            const step = (now) => {
+              const t = Math.min((now - t0) / duration, 1);
+              const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+              const v = Math.round(target * eased);
+              el.textContent = v + "%";
+              if (t < 1) requestAnimationFrame(step);
             };
             requestAnimationFrame(step);
             observer.disconnect();
@@ -1082,6 +1263,23 @@
         });
       }, { threshold: 0.5 });
       observer.observe(el);
+    })();
+
+    // Magnetic CTA — subtle cursor pull on hover (Linear/Stripe-style craft).
+    // Disabled on touch + reduced-motion users.
+    (function () {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (window.matchMedia("(hover: none)").matches) return;
+      const strength = 0.22;
+      document.querySelectorAll(".btn-magnetic").forEach((btn) => {
+        btn.addEventListener("mousemove", (e) => {
+          const r = btn.getBoundingClientRect();
+          const x = e.clientX - (r.left + r.width / 2);
+          const y = e.clientY - (r.top + r.height / 2);
+          btn.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+        });
+        btn.addEventListener("mouseleave", () => { btn.style.transform = ""; });
+      });
     })();
 
     // Form submission → /api/waitlist (Vercel function)
