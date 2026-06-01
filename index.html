@@ -45,6 +45,23 @@
 
       --max: 1240px;
       --gutter: clamp(1.25rem, 4vw, 2.5rem);
+
+      /* ---------- SPACING SCALE ----------
+         Editorial does not mean airy. Use these tokens for all vertical
+         rhythm — DO NOT introduce ad-hoc clamp() padding/margin values.
+         Tight spacing is a brand rule: section padding caps at ~32px on
+         the largest viewports, never 80px+. */
+      --space-2xs: clamp(0.25rem, 0.5vw, 0.4rem);   /*  4–6 px */
+      --space-xs:  clamp(0.4rem,  0.8vw, 0.6rem);   /*  6–10 px */
+      --space-sm:  clamp(0.6rem,  1.2vw, 0.85rem);  /* 10–14 px */
+      --space-md:  clamp(0.85rem, 1.8vw, 1.15rem);  /* 14–18 px */
+      --space-lg:  clamp(1.15rem, 2.4vw, 1.5rem);   /* 18–24 px */
+      --space-xl:  clamp(1.5rem,  3vw,   2rem);     /* 24–32 px */
+
+      /* Vertical section padding — only ever use these for top/bottom of sections */
+      --section-y:      clamp(1.25rem, 2.5vw, 1.75rem); /* 20–28 px */
+      --section-y-hero: clamp(0.875rem, 2vw, 1.25rem);  /* 14–20 px (tighter — nav already gives space) */
+      --section-y-cta:  clamp(1.75rem, 3.5vw, 2.5rem);  /* 28–40 px (closing CTA gets a touch more) */
     }
 
     /* ---------- RESET + BASE ---------- */
@@ -208,9 +225,9 @@
     }
 
     /* ---------- HERO ---------- */
-    .hero { padding: clamp(3rem, 9vw, 7rem) 0 clamp(2rem, 6vw, 5rem); }
+    .hero { padding: var(--section-y-hero) 0 var(--space-md); }
     .hero-grid {
-      display: grid; gap: clamp(1.5rem, 3vw, 2.5rem);
+      display: grid; gap: var(--space-sm);
       grid-template-columns: 1fr;
     }
     @media (min-width: 920px) {
@@ -419,7 +436,7 @@
     .hero-meta b { color: var(--ink); font-weight: 500; }
 
     .hero-lede {
-      margin-top: clamp(1.25rem, 2vw, 2rem);
+      margin-top: var(--space-xs);
       max-width: 38ch;
       font-family: var(--font-serif);
       font-variation-settings: "opsz" 14;
@@ -431,7 +448,7 @@
 
     /* Hero form */
     .waitlist {
-      margin-top: clamp(2rem, 4vw, 3rem);
+      margin-top: var(--space-md);
       max-width: 520px;
     }
     .waitlist-row {
@@ -481,7 +498,7 @@
 
     /* ---------- MANIFESTO ---------- */
     .manifesto {
-      padding: clamp(3rem, 7vw, 6rem) 0;
+      padding: var(--section-y) 0;
       border-top: 1px solid var(--rule);
       border-bottom: 1px solid var(--rule);
       background: var(--paper-deep);
@@ -506,7 +523,7 @@
       color: var(--terra);
     }
     .manifesto-sig {
-      margin-top: 2rem;
+      margin-top: var(--space-sm);
       font-family: var(--font-mono);
       font-size: 0.72rem;
       letter-spacing: 0.12em;
@@ -515,39 +532,40 @@
     }
 
     /* ---------- PRINCIPLES ---------- */
-    .principles { padding: clamp(3rem, 7vw, 6rem) 0; }
-    .principles-head { margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+    .principles { padding: var(--section-y) 0; }
+    .principles-head { margin-bottom: var(--space-md); }
     .principles-head h2 em { color: var(--terra); }
-    .principles-list { display: grid; gap: clamp(2rem, 4vw, 3.5rem); }
+    .principles-list { display: grid; gap: var(--space-sm); }
     .principle {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 0.5rem 2rem;
-      padding-top: 2rem;
+      gap: var(--space-2xs) var(--space-md);
+      padding-top: var(--space-sm);
       border-top: 1px solid var(--rule);
     }
     .principle:first-child { border-top: 2px solid var(--ink); }
     @media (min-width: 820px) {
       .principle {
-        grid-template-columns: minmax(0,2fr) minmax(0,3fr) minmax(0,3fr);
+        /* numeral pinned to a fixed-ish column, headline + description share the rest */
+        grid-template-columns: clamp(60px, 7vw, 88px) minmax(0, 5fr) minmax(0, 7fr);
+        align-items: baseline;
       }
     }
     .principle-num {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-size: clamp(1.6rem, 2.8vw, 2.4rem);
       color: var(--terra);
       line-height: 1;
-      
     }
     .principle h3 {
       font-variation-settings: "opsz" 30;
     }
-    .principle p { color: var(--slate); margin: 0.5rem 0 0; max-width: 38ch; }
+    .principle p { color: var(--slate); margin: var(--space-2xs) 0 0; max-width: 38ch; }
 
     /* ---------- SAMPLE ANALYSIS ---------- */
     .sample {
-      padding: clamp(3rem, 7vw, 6rem) 0;
+      padding: var(--section-y) 0;
       background: var(--ink);
       color: var(--paper);
       border-top: 1px solid var(--ink);
@@ -564,18 +582,18 @@
     }
     .sample-intro { color: color-mix(in srgb, var(--paper) 75%, transparent); margin-top: 1rem; }
     .sample-card {
-      margin-top: clamp(2rem, 4vw, 3rem);
+      margin-top: var(--space-md);
       background: color-mix(in srgb, var(--paper) 5%, var(--ink));
       border: 1px solid color-mix(in srgb, var(--paper) 20%, transparent);
       border-radius: 4px;
-      padding: clamp(1.5rem, 3.5vw, 3rem);
+      padding: var(--space-md);
     }
     .sample-meta {
       display: grid;
       gap: 1.25rem;
-      padding-bottom: 1.5rem;
+      padding-bottom: var(--space-sm);
       border-bottom: 1px solid color-mix(in srgb, var(--paper) 15%, transparent);
-      margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+      margin-bottom: var(--space-sm);
     }
     @media (min-width: 720px) {
       .sample-meta { grid-template-columns: 1fr auto; align-items: end; }
@@ -616,7 +634,7 @@
       color: var(--paper);
     }
     .sample-grid {
-      display: grid; gap: clamp(1.75rem, 3vw, 2.5rem);
+      display: grid; gap: var(--space-sm);
     }
     @media (min-width: 820px) {
       .sample-grid { grid-template-columns: minmax(0,7fr) minmax(0,5fr); }
@@ -693,14 +711,14 @@
     .marker-text b { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--paper);  }
 
     /* ---------- HOW IT WORKS ---------- */
-    .how { padding: clamp(3rem, 7vw, 6rem) 0; }
+    .how { padding: var(--section-y) 0; }
     .how h2 em { color: var(--terra); }
-    .chapters { margin-top: clamp(2rem, 4vw, 3rem); display: grid; gap: 0.5rem; }
+    .chapters { margin-top: var(--space-md); display: grid; gap: 0.5rem; }
     @media (min-width: 820px) {
       .chapters { grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
     }
     .chapter {
-      padding: clamp(1.5rem, 3vw, 2.25rem);
+      padding: var(--space-sm);
       background: var(--paper);
       border-top: 1px solid var(--rule);
     }
@@ -715,7 +733,7 @@
       margin-bottom: 1rem;
     }
     .chapter h3 {
-      margin-bottom: 0.75rem;
+      margin-bottom: var(--space-2xs);
       font-variation-settings: "opsz" 30;
     }
     .chapter h3 em { color: var(--terra); }
@@ -723,20 +741,20 @@
 
     /* ---------- PRICING ---------- */
     .pricing {
-      padding: clamp(3rem, 7vw, 6rem) 0;
+      padding: var(--section-y) 0;
       border-top: 1px solid var(--rule);
       background: var(--paper-deep);
     }
     .pricing h2 em { color: var(--terra); }
     .pricing-table {
-      margin-top: clamp(2rem, 4vw, 3rem);
+      margin-top: var(--space-md);
       border-top: 2px solid var(--ink);
     }
     .pricing-row {
       display: grid;
       grid-template-columns: 1fr;
       gap: 0.25rem 1.5rem;
-      padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+      padding: var(--space-sm) 0;
       border-bottom: 1px solid var(--rule);
       align-items: baseline;
     }
@@ -772,19 +790,19 @@
     .pricing-feats li { padding: 0.15rem 0; }
     .pricing-cta { font-size: 0.85rem; color: var(--terra); font-weight: 500; }
     .pricing-note {
-      margin-top: 2rem;
+      margin-top: var(--space-md);
       font-size: 0.85rem;
       color: var(--slate);
       text-align: center;
     }
 
     /* ---------- FAQ ---------- */
-    .faq { padding: clamp(3rem, 7vw, 6rem) 0; }
+    .faq { padding: var(--section-y) 0; }
     .faq h2 em { color: var(--terra); }
-    .faq-list { margin-top: clamp(2rem, 4vw, 3rem); border-top: 2px solid var(--ink); }
+    .faq-list { margin-top: var(--space-md); border-top: 2px solid var(--ink); }
     details.q {
       border-bottom: 1px solid var(--rule);
-      padding: clamp(1.1rem, 2vw, 1.5rem) 0;
+      padding: var(--space-xs) 0;
     }
     details.q summary {
       display: flex; justify-content: space-between; gap: 1rem;
@@ -805,11 +823,11 @@
       color: var(--terra);
     }
     details.q[open] summary::after { transform: rotate(45deg); }
-    details.q p { color: var(--slate); margin: 1rem 0 0; max-width: 70ch; line-height: 1.65; }
+    details.q p { color: var(--slate); margin: var(--space-xs) 0 0; max-width: 70ch; line-height: 1.65; }
 
     /* ---------- FINAL CTA ---------- */
     .closing {
-      padding: clamp(4rem, 9vw, 8rem) 0;
+      padding: var(--section-y-cta) 0;
       background: var(--ink);
       color: var(--paper);
       text-align: center;
@@ -822,7 +840,7 @@
     }
     .closing h2 em { color: var(--terra-light); }
     .closing .hero-lede { color: color-mix(in srgb, var(--paper) 70%, transparent); margin: 1.5rem auto 0; }
-    .closing .waitlist { margin: clamp(2rem, 4vw, 3rem) auto 0; }
+    .closing .waitlist { margin: var(--space-md) auto 0; }
     .closing .waitlist-row { border-color: color-mix(in srgb, var(--paper) 60%, transparent); background: color-mix(in srgb, var(--paper) 5%, transparent); }
     .closing .waitlist input[type="email"] { color: var(--paper); }
     .closing .waitlist input[type="email"]::placeholder { color: color-mix(in srgb, var(--paper) 50%, transparent); }
@@ -832,12 +850,12 @@
 
     /* ---------- FOOTER ---------- */
     .footer {
-      padding: 3rem 0 4rem;
+      padding: var(--space-lg) 0;
       background: var(--ink);
       color: color-mix(in srgb, var(--paper) 60%, transparent);
       font-size: 0.85rem;
     }
-    .footer-inner { display: grid; gap: 1.5rem; }
+    .footer-inner { display: grid; gap: var(--space-sm); }
     @media (min-width: 720px) {
       .footer-inner { grid-template-columns: 1fr auto; align-items: end; }
     }
@@ -861,7 +879,7 @@
     }
     .footer-links a:hover { color: var(--terra-light); }
     .legal {
-      margin-top: 2rem;
+      margin-top: var(--space-md);
       padding-top: 1.5rem;
       border-top: 1px solid color-mix(in srgb, var(--paper) 12%, transparent);
       font-size: 0.78rem;
@@ -911,7 +929,7 @@
       <div class="hero-grid">
         <div>
           <p class="eyebrow reveal" data-delay="1">A scientific instrument for pet owners</p>
-          <h1 class="reveal" data-delay="2" style="margin-top: 1.25rem;">
+          <h1 class="reveal" data-delay="2" style="margin-top: var(--space-xs);">
             Know what your pet is <em>actually</em><br />
             <span class="underline-art">trying to say.</span>
           </h1>
@@ -953,7 +971,7 @@
   <section class="manifesto" id="manifesto">
     <div class="container narrow">
       <p class="label reveal">§ 01 · The premise</p>
-      <p class="manifesto-text" style="margin-top: 1.25rem;">
+      <p class="manifesto-text" style="margin-top: var(--space-sm);">
         <span class="dropcap">M</span>ost pet translator apps are entertainment products — cartoon translations that monetize through weekly subscription rugpulls. We built the opposite: a clinical instrument that <em>documents what it sees</em> in your pet's body language, weighs the context you provide, and returns the kind of analysis a board-certified behaviorist would write in a session note.
       </p>
       <p class="manifesto-sig">— The PetTranslator team, Spring 2026</p>
@@ -965,7 +983,7 @@
     <div class="container">
       <div class="principles-head narrower">
         <p class="label">§ 02 · How we think about it</p>
-        <h2 style="margin-top: 1rem;">Three principles, applied <em>strictly</em>.</h2>
+        <h2 style="margin-top: var(--space-2xs);">Three principles, applied <em>strictly</em>.</h2>
       </div>
 
       <div class="principles-list">
@@ -992,8 +1010,8 @@
   <section class="sample" id="sample">
     <div class="container">
       <p class="label">§ 03 · Specimen report</p>
-      <h2 style="margin-top: 1rem;">This is what a <em>real</em> analysis looks like.</h2>
-      <p class="sample-intro narrower" style="margin-top: 1rem;">
+      <h2 style="margin-top: var(--space-2xs);">This is what a <em>real</em> analysis looks like.</h2>
+      <p class="sample-intro narrower" style="margin-top: var(--space-2xs);">
         Not "Woof! Feed me!" cartoons. Behavioral signals, mapped to recommendations you can act on today.
       </p>
 
@@ -1053,7 +1071,7 @@
     <div class="container">
       <div class="principles-head narrower">
         <p class="label">§ 04 · The process</p>
-        <h2 style="margin-top: 1rem;">Three chapters, about <em>thirty seconds.</em></h2>
+        <h2 style="margin-top: var(--space-2xs);">Three chapters, about <em>thirty seconds.</em></h2>
       </div>
 
       <div class="chapters">
@@ -1081,7 +1099,7 @@
     <div class="container">
       <div class="principles-head narrower">
         <p class="label">§ 05 · Subscription</p>
-        <h2 style="margin-top: 1rem;">Simple pricing. <em>Cancel in one click.</em></h2>
+        <h2 style="margin-top: var(--space-2xs);">Simple pricing. <em>Cancel in one click.</em></h2>
       </div>
 
       <div class="pricing-table">
@@ -1136,7 +1154,7 @@
     <div class="container narrow">
       <div class="principles-head">
         <p class="label">§ 06 · Common questions</p>
-        <h2 style="margin-top: 1rem;">You're <em>right</em> to ask.</h2>
+        <h2 style="margin-top: var(--space-2xs);">You're <em>right</em> to ask.</h2>
       </div>
 
       <div class="faq-list">
