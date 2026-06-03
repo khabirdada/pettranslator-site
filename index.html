@@ -10,6 +10,70 @@
   <!-- Site verification — required by Impact.com for affiliate-program approval -->
   <meta name="impact-site-verification" value="006531a1-d4a2-420c-b585-91b1dd633942" />
 
+  <!-- Canonical + sitemap discovery -->
+  <link rel="canonical" href="https://pettranslator.ai/" />
+
+  <!-- Schema.org structured data — helps Google, Bing, AI Overviews, and ChatGPT
+       understand what PetTranslator.ai is. Three @types because they each
+       answer different search queries. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://pettranslator.ai/#organization",
+        "name": "PetTranslator.ai",
+        "url": "https://pettranslator.ai/",
+        "logo": "https://pettranslator.ai/assets/icon-512.png",
+        "description": "Premium AI-powered behavioral analysis for dog and cat owners. Upload a clip, get a veterinary-behaviorist-grade report.",
+        "email": "hello@pettranslator.ai",
+        "sameAs": []
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://pettranslator.ai/#website",
+        "url": "https://pettranslator.ai/",
+        "name": "PetTranslator.ai",
+        "publisher": { "@id": "https://pettranslator.ai/#organization" },
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "PetTranslator.ai",
+        "operatingSystem": "Web",
+        "applicationCategory": "LifestyleApplication",
+        "applicationSubCategory": "Pet Behavior Analysis",
+        "url": "https://pettranslator.ai/",
+        "description": "Upload a 10-second video of your dog or cat. A multimodal AI documents body language, vocalization, and context the way a veterinary behaviorist would, then translates it into plain English with an actionable owner action plan.",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Free tier",
+            "price": "0",
+            "priceCurrency": "USD",
+            "description": "3 analyses per day, basic behavioral report, 1 pet profile, 7-day history."
+          },
+          {
+            "@type": "Offer",
+            "name": "Premium monthly",
+            "price": "4.99",
+            "priceCurrency": "USD",
+            "description": "Unlimited analyses, full biometric breakdown, up to 5 pet profiles, unlimited history, vet-ready PDF export."
+          },
+          {
+            "@type": "Offer",
+            "name": "Premium annual",
+            "price": "39.99",
+            "priceCurrency": "USD",
+            "description": "Same as Premium monthly with two months free."
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <!-- Open Graph / social share -->
   <meta property="og:title" content="PetTranslator.ai — A scientific instrument for understanding your pet" />
   <meta property="og:description" content="Veterinary-grade multimodal AI analyzes your pet's video, body language, and sounds to reveal their emotional state in seconds." />
