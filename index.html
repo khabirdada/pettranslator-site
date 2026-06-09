@@ -1337,68 +1337,103 @@
 
   <!-- ============ INTERACTIVITY ============ -->
   <script>
-    // Scroll-triggered marker reveal in the specimen report
-    (function () {
-      const markers = document.getElementById("markers");
-      if (!markers) return;
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            markers.classList.add("in-view");
-            observer.disconnect();
-          }
-        });
-      }, { threshold: 0.25 });
-      observer.observe(markers);
-    })();
+    // All initialization deferred via requestIdleCallback so it never
+    // competes with First Contentful Paint. Fallback to setTimeout for
+    // browsers without rIC (Safari < 17).
+    const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
 
-    // Count-up confidence number (paired with SVG stroke fill in CSS)
-    (function () {
-      const el = document.getElementById("confnum");
-      if (!el) return;
-      const target = 92;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        el.textContent = target + "%";
-        return;
-      }
-      let started = false;
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting && !started) {
-            started = true;
-            const duration = 1400;
-            const t0 = performance.now();
-            const step = (now) => {
-              const t = Math.min((now - t0) / duration, 1);
-              const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
-              const v = Math.round(target * eased);
-              el.textContent = v + "%";
-              if (t < 1) requestAnimationFrame(step);
-            };
-            requestAnimationFrame(step);
-            observer.disconnect();
-          }
-        });
-      }, { threshold: 0.5 });
-      observer.observe(el);
-    })();
+    onIdle(() => {
+      // Scroll-triggered marker reveal in the specimen report
+      (function () {
+        const markers = document.getElementById("markers");
+        if (!markers) return;
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              markers.classList.add("in-view");
+              observer.disconnect();
+            }
+          });
+        }, { threshold: 0.25 });
+        observer.observe(markers);
+      })();
 
-    // Magnetic CTA — subtle cursor pull on hover (Linear/Stripe-style craft).
-    // Disabled on touch + reduced-motion users.
-    (function () {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      if (window.matchMedia("(hover: none)").matches) return;
-      const strength = 0.22;
-      document.querySelectorAll(".btn-magnetic").forEach((btn) => {
-        btn.addEventListener("mousemove", (e) => {
-          const r = btn.getBoundingClientRect();
-          const x = e.clientX - (r.left + r.width / 2);
-          const y = e.clientY - (r.top + r.height / 2);
-          btn.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+      // Count-up confidence number (paired with SVG stroke fill in CSS)
+      (function () {
+        const el = document.getElementById("confnum");
+        if (!el) return;
+        const target = 92;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          el.textContent = target + "%";
+          return;
+        }
+        let started = false;
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting && !started) {
+              started = true;
+              const duration = 1400;
+              const t0 = performance.now();
+              const step = (now) => {
+                const t = Math.min((now - t0) / duration, 1);
+                const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+                const v = Math.round(target * eased);
+                el.textContent = v + "%";
+                if (t < 1) requestAnimationFrame(step);
+              };
+              requestAnimationFrame(step);
+              observer.disconnect();
+            }
+          });
+        }, { threshold: 0.5 });
+        observer.observe(el);
+      })();
+
+      // Magnetic CTA — Linear/Stripe-style cursor pull on hover.
+      // PSI flagged the old version for forced reflow: it called
+      // getBoundingClientRect() on every mousemove (60-120Hz), and each
+      // call forces the browser to recompute layout because the previous
+      // mousemove had just written style.transform. Fix:
+      //   1. Cache the rect ONCE on mouseenter — and refresh on resize
+      //      so resize doesn't break the centering math.
+      //   2. Throttle style writes through requestAnimationFrame so we
+      //      never schedule more than one layout-invalidating write
+      //      per frame.
+      // Disabled on touch + reduced-motion.
+      (function () {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        if (window.matchMedia("(hover: none)").matches) return;
+        const strength = 0.22;
+        document.querySelectorAll(".btn-magnetic").forEach((btn) => {
+          let rect = null;
+          let raf = 0;
+          let pendingX = 0;
+          let pendingY = 0;
+
+          const refreshRect = () => { rect = btn.getBoundingClientRect(); };
+
+          btn.addEventListener("mouseenter", refreshRect);
+          window.addEventListener("resize", () => { if (rect) rect = null; }, { passive: true });
+
+          btn.addEventListener("mousemove", (e) => {
+            if (!rect) refreshRect();
+            pendingX = (e.clientX - (rect.left + rect.width / 2)) * strength;
+            pendingY = (e.clientY - (rect.top + rect.height / 2)) * strength;
+            if (raf) return;
+            raf = requestAnimationFrame(() => {
+              btn.style.transform = `translate3d(${pendingX}px, ${pendingY}px, 0)`;
+              raf = 0;
+            });
+          }, { passive: true });
+
+          btn.addEventListener("mouseleave", () => {
+            if (raf) { cancelAnimationFrame(raf); raf = 0; }
+            btn.style.transform = "";
+            rect = null;
+          });
         });
-        btn.addEventListener("mouseleave", () => { btn.style.transform = ""; });
-      });
-    })();
+      })();
+    });
 
     // Form submission → /api/waitlist (Vercel function)
     document.querySelectorAll('form[id^="waitlist-form"]').forEach((form) => {
